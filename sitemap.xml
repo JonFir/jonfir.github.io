@@ -3,11 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://jonfir.github.io/categories/</loc>
+    <loc>https://jonfir.github.io/</loc>
+    <lastmod>2019-10-28T12:40:40+07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://jonfir.github.io/</loc>
+    <loc>https://jonfir.github.io/posts/</loc>
+    <lastmod>2019-10-28T12:40:40+07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jonfir.github.io/posts/ios-project-structure/</loc>
+    <lastmod>2019-10-28T12:40:40+07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jonfir.github.io/categories/</loc>
   </url>
   
   <url>
