@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Функциональный Swift — это просто</title>
+        
+        <style>
+
+    html body {
+        font-family: '', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: red;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://jonfir.github.io/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.59.0" />
+        
+
+        
+
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Функциональный Swift — это просто</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                                <li><a href="/posts/">Posts</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="mailto:yolchev@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/JonFir/"><i class="fa fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/tygeddar/"><i class="fa fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://teleg.run/jonfir"><i class="fa fa-telegram"></i></a></li>
+                            
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>Функциональный Swift — это просто</h2>
+        <h5>October 29, 2019</h5>
+        
+
+    </div>
+
+    <div align="start" class="content">
+
+<p>В статьях о функциональном программировании много пишут о том, как ФП подход улучшает разработку: код становится легко писать, читать, разбивать на потоки и тестировать, построить плохую архитектуру невозможно<del>, а волосы становятся мягкими и шелковистыми</del>.</p>
+
+<p>Недостаток один — высокий порог входа. Пытаясь разобраться в ФП, я столкнулся с огромным количеством теории, функторами, монадами, теорией категорий и алгебраическими типами данных. А как применять ФП на практике, было неясно. Кроме того, примеры приводились на незнакомых мне языках — хаскеле и скале.</p>
+
+<p>Тогда я решил разобраться в ФП самого начала. Разобрался и <a href="https://2019.codefest.ru/lecture/1413">рассказал на codefest</a> о том, что ФП — это на самом деле просто, что мы уже им пользуемся в Swift и можем пользоваться еще эффективнее.</p>
+
+<h2 id="функциональное-программирование-чистые-функции-и-отсутствие-состояний">Функциональное программирование: чистые функции и отсутствие состояний</h2>
+
+<p>Определить, что означает писать в той или иной парадигме — нелегкая задача. Парадигмы формируются десятилетиями людьми с разным видением, воплощаются в языках с непохожими подходами, обрастают инструментами. Эти инструменты и подходы считаются неотъемлемой частью парадигм, но на самом деле ими не являются.</p>
+
+<p>Например, считается, что объектно-ориентированное программирование стоит на трех китах — наследование, инкапсуляция и полиморфизм. Но инкапсуляция и полиморфизм реализуется на функциях с той же легкостью, что и на объектах. Или замыкания — они родились в чистых функциональных языках, но так давно перекочевали в промышленные языки, что перестали ассоциироваться с ФП. Монады тоже пробираются в промышленные языки, но пока не утратили принадлежность к условному хаскелю в умах людей.</p>
+
+<p>В итоге получается, что невозможно четко определить, что конкретно представляет из себя та или иная парадигма. Я в очередной раз столкнулся с этим на codefest 2019, где все эксперты ФП, говоря о функциональной парадигме, называли разные вещи.</p>
+
+<p>Лично мне понравилось определение из вики:</p>
+
+<p>«Функциона́льное программи́рование — раздел дискретной математики и парадигма программирования, в которой процесс вычисления трактуется как вычисление значений функций в математическом понимании последних (в отличие от функций как подпрограмм в процедурном программировании)».</p>
+
+<p>Что такое математическая функция? Это функция, результат которой зависит только от данных, к которым она применена.</p>
+
+<p>Пример математической функции в четыре строки кода выглядит так:</p>
+
+<pre><code class="language-swift">func summ(a: Int, b: Int) -&gt; Int {
+    return a + b
+}
+let x = summ(a: 2, b: 3)
+</code></pre>
+
+<p>Вызывая функцию summ с входными аргументами 2 и 3, получим 5. Этот результат неизменен. Поменяйте программу, поток, место исполнения — результат останется прежним.</p>
+
+<p>А нематематическая функция — это когда где-то объявлена глобальная переменная.</p>
+
+<pre><code class="language-swift">var z = 5
+</code></pre>
+
+<p>Функция суммирования теперь складывает входные аргументы и значение z.</p>
+
+<pre><code class="language-swift">func summ(a: Int, b: Int) -&gt; Int {
+    return a + b + z
+}
+let x = summ(a: 2, b: 3)
+</code></pre>
+
+<p>Добавилась зависимость от глобального состояния. Теперь нельзя однозначно предсказать значение x. Оно будет постоянно меняться в зависимости от того, когда была вызвана функция. Вызовем функцию 10 раз подряд, и каждый раз можем получить разный результат.</p>
+
+<p>Еще один вариант нематематической функции:</p>
+
+<pre><code class="language-swift">func summ(a: Int, b: Int) -&gt; Int {
+    z = b - a
+    return a + b
+}
+</code></pre>
+
+<p>Помимо возврата суммы входных аргументов, функция меняет глобальную переменную z. Эта функция имеет сайд-эффект.</p>
+
+<p>В функциональном программировании есть специальный термин для математических функций — чистые функции. Чистая функция — это такая функция, которая для одного и того же набора входных значений возвращает одинаковый результат и не обладает побочными эффектами.</p>
+
+<p>Чистые функции — краеугольный камень ФП, все остальное уже вторично. Предполагается, что, следуя этой парадигме, используем только их. А если никак не работать с глобальными или изменяемыми состояниями, то их и не будет в приложении.</p>
+
+<h2 id="классы-и-структуры-в-функциональной-парадигме">Классы и структуры в функциональной парадигме</h2>
+
+<p>Изначально, я думал, что ФП — это только про функции, а классы и структуры используются только в ООП. Но оказалось, классы тоже вписываются в концепцию ФП. Только и они должны быть, скажем так, «чистыми».</p>
+
+<p>«Чистый» класс — класс, все методы которого являются чистыми функциями, а свойства неизменяемы. (Это неофициальный термин, придуман во время подготовки к докладу).</p>
+
+<p>Взглянем на такой класс:</p>
+
+<pre><code class="language-swift">class User {
+    let name: String
+    let surname: String
+    let email: String
+
+    func getFullname() -&gt; String {
+        return name + &quot; &quot; + surname
+    }   
+}
+</code></pre>
+
+<p>Его можно рассматривать как инкапсуляцию данных&hellip;</p>
+
+<pre><code class="language-swift">class User {
+    let name: String
+    let surname: String
+    let email: String   
+}
+</code></pre>
+
+<p>и функций по работе с ними.</p>
+
+<pre><code class="language-swift">func getFullname() -&gt; String {
+    return name + &quot; &quot; + surname
+}
+</code></pre>
+
+<p>С точки зрения ФП, использование класса User ничем не отличается от работы с примитивами и функциями.</p>
+
+<p>Объявим значение — пользователя Ваню.</p>
+
+<pre><code class="language-swift">let ivan = User(
+    name: &quot;Иван&quot;,
+    surname: &quot;Иванов&quot;,
+    email: &quot;ivanov@example.com&quot;
+)
+</code></pre>
+
+<p>Применим к нему функцию getFullname.</p>
+
+<pre><code class="language-swift">let fullName = ivan.getFullname()
+</code></pre>
+
+<p>В результате получим новое значение — полное имя пользователя. Так как изменить параметры свойства ivan нельзя, результат вызова getFullname неизменен.</p>
+
+<p>Конечно внимательный читатель может сказать: «Постой-ка, метод getFullname возвращает результат на основе глобальных для него значений — свойств класса, а не аргументов». Но на самом деле метод — это просто функция, в которую в качестве аргумента передается объект.</p>
+
+<p>Swift даже поддерживает эту запись в явном виде:</p>
+
+<pre><code class="language-swift">let fullName = User.getFullname(ivan)()
+</code></pre>
+
+<p>Если же нам понадобиться изменить какое-то значение у объекта, например email, то придется создавать новый объект. Это можно делать соответствующим методом.</p>
+
+<pre><code class="language-swift">class User {
+    let name: String
+    let surname: String
+    let email: String
+
+    func change(email: String) -&gt; User {
+        return User(name: name, surname: surname, email: email)
+    }    
+}
+let newIvan = ivan.change(email: &quot;god@example.com&quot;)
+</code></pre>
+
+<h2 id="функциональные-атрибуты-в-swift">Функциональные атрибуты в Swift</h2>
+
+<p>Я уже писал о том, что многие инструменты, реализации и подходы, считающиеся частью той или иной парадигмы, на самом деле могут применяться и в других парадигмах. Например, частью ФП считаются монады, алгебраические типы данных, автоматический вывод типов, строгая типизация, зависимые типы, проверка корректности программы во время компиляции. Но многие из этих инструментов мы можем найти и в Swift.</p>
+
+<p>Строгая типизация и вывод типов — часть Swift. Их не нужно понимать или вводить в проект, они просто у нас есть.</p>
+
+<p>Зависимых типов нет, хотя я бы не отказался от проверки компилятором строки, что она email, массива, что он не пустой, словаря, что он содержит ключ «apple». Кстати, в Haskell зависимых типов тоже нет.</p>
+
+<p>Алгебраические типы данных имеются, и это крутая, но сложная для понимания математическая штука. Прелесть в том, что ее не надо понимать математически, чтобы использовать. Например Int, enum, Optional, Hashable — это алгебраические типы. И если Int есть во многих языках, а Protocol есть и в Objective-C, то enum со связанными значениями, протоколы с дефолтной реализацией и ассоциативными типами есть далеко не везде.</p>
+
+<p>Проверку корректности во время компиляции часто упоминают, говоря о таких языках, как rust или haskell. Подразумевается, что язык настолько выразителен, что позволяет описать все краевые случаи так, чтобы их проверил компилятор. А значит, если программа скомпилировалась, то она обязательно будет работать. Никто не спорит, что она может содержать ошибки в логике, потому что вы неправильно отфильтровали данные для показа пользователю. Но она не будет падать, потому что вы не получили данные из БД, сервер вернул вам не тот ответ, на который вы рассчитывали, или пользователь ввел дату своего рождения строкой, а не числом.</p>
+
+<p>Не могу сказать, что компиляция swift кода может отловить все баги: например, утечку памяти допустить легко. Но строгая типизация и Optional хорошо защищают от множества глупых ошибок. Главное — ограничить принудительное извлечение.</p>
+
+<h2 id="монады-не-часть-парадигмы-фп-а-инструмент-необязательный">Монады: не часть парадигмы ФП, а инструмент (необязательный)</h2>
+
+<p>Довольно часто ФП и монады используются в одном и том же приложении. Одно время я даже думал, что монады и есть функциональное программирование. Когда же я их понял (но это не точно), то сделал несколько выводов:</p>
+
+<ul>
+<li>они несложные;</li>
+<li>они удобные;</li>
+<li>понимать их необязательно, достаточно уметь применять;</li>
+<li>без них легко можно обойтись.</li>
+</ul>
+
+<p>В Swift уже есть две стандартные монады — Optional и Result. Обе нужны для борьбы с сайд-эффектами. Optional защищает от возможного nil. Result — от различных исключительных ситуаций.</p>
+
+<p>Рассмотрим на примере, доведенном до абсурда. Пусть у нас есть функции, возвращающие целое число из базы данных и от сервера. Вторая может вернуть nil, но мы используем неявное извлечение получая поведение времен Objective-C.</p>
+
+<pre><code class="language-swift">func getIntFromDB() -&gt; Int
+func getIntFromServer() -&gt; Int!
+</code></pre>
+
+<p>Продолжаем игнорировать Optional и реализуем функцию для суммирования этих чисел.</p>
+
+<pre><code class="language-swift">func summInts() -&gt; Int! {
+    let intFromDB = getIntFromDB()
+    let intFromServer = getIntFromServer()!
+    let summ = intFromDB + intFromServer
+    return summ
+}
+</code></pre>
+
+<p>Вызываем итоговую функцию и используем результат.</p>
+
+<pre><code class="language-swift">let result = summInts()
+print(result)
+</code></pre>
+
+<p>Сработает ли этот пример? Ну, он определенно скомпилируется, а вот получим мы креш во время выполнения или нет — никому неизвестно. Этот код хорош, он отлично показывает наши намерения (нам необходима сумма каких-то двух чисел) и при этом не содержит ничего лишнего. Но он опасен. Поэтому так пишут только джуниоры и уверенные в себе люди.</p>
+
+<p>Изменим пример, сделав его безопасным.</p>
+
+<pre><code class="language-swift">func getIntFromDB() -&gt; Int
+func getIntFromServer() -&gt; Int?
+
+func summInts() -&gt; Int? {
+    let intFromDB = getIntFromDB()
+    let intFromServer = getIntFromServer()
+
+    if let intFromServer = intFromServer {
+        let summ = intFromDB + intFromServer
+        return summ
+    } else {
+        return nil
+    }
+}
+
+if let result = summInts() {
+    print(result)
+}
+</code></pre>
+
+<p>Этот код хорош, он безопасен. Используя явное извлечение, мы защитились от возможного nil. Но он стал громоздким, и среди безопасных проверок уже сложно разглядеть наше намерение. Нам все еще необходима сумма каких-то двух чисел, а не проверки безопасности.</p>
+
+<p>На этот случай у Optional есть метод map, доставшийся ему от типа Maybe из Haskell. Применим его, и пример изменится.</p>
+
+<pre><code class="language-swift">func getIntFromDB() -&gt; Int
+func getIntFromServer() -&gt; Int?
+
+func summInts() -&gt; Int? {
+    let intFromDB = getIntFromDB()
+    let intFromServer = getIntFromServer()
+
+    return intFromServer.map { x in x + intFromDB }
+}
+
+if let result = summInts() {
+    print(result)
+}
+</code></pre>
+
+<p>Или еще компактнее.</p>
+
+<pre><code class="language-swift">func getIntFromDB() -&gt; Int
+func getintFromServer() -&gt; Int?
+
+func summInts() -&gt; Int? {
+    return getintFromServer().map { $0 + getIntFromDB() }
+}
+
+if let result = summInts() {
+    print(result)
+}
+</code></pre>
+
+<p>Мы использовали map, чтобы преобразовать intFromServer в необходимый нам результат без извлечения.</p>
+
+<p>Мы избавились от проверки внутри summInts, но оставили ее на верхнем уровне. Это сделано намеренно, так как в конце цепочки вычислений мы должны выбрать способ обработки отсутствия результата.</p>
+
+<p>Извлечь</p>
+
+<pre><code class="language-swift">if let result = summInts() {
+    print(result)
+}
+</code></pre>
+
+<p>Использовать значение по умолчанию</p>
+
+<pre><code class="language-swift">print(result ?? 0)
+</code></pre>
+
+<p>Или вывести предупреждение если, данные не получены.</p>
+
+<pre><code class="language-swift">if let result = summInts() {
+    print(result)
+} else {
+    print(&quot;Ошибка&quot;)
+}
+</code></pre>
+
+<p>Теперь код в примере не содержит лишнего, как в первом примере, и безопасен, как во втором.</p>
+
+<p>Но map не всегда работает так, как нужно</p>
+
+<pre><code class="language-swift">let a: String? = &quot;7&quot;
+let b = a.map { Int($0) }
+type(of: b)//Optional&lt;Optional&lt;Int&gt;&gt;
+</code></pre>
+
+<p>Если в map передать функцию, результат которой опционален, мы получим двойной Optional. Но нам не нужна двойная защита от nil. Достаточно одной. Решить проблему позволяет метод flatMap, это аналог map с одним отличием, он разворачивает матрешки.</p>
+
+<pre><code class="language-swift">let a: String? = &quot;7&quot;
+let b = a.flatMap { Int($0) }
+type(of: b)//Optional&lt;Int&gt;.
+</code></pre>
+
+<p>Еще один пример, где map и flatMap не очень удобно использовать.</p>
+
+<pre><code class="language-swift">let a: Int? = 3
+let b: Int? = 7
+let c = a.map { $0 + b! }
+</code></pre>
+
+<p>Что, если функция принимает два аргумента и они оба опциональные? Конечно, у ФП есть решение — это аппликативный функтор и каррирование. Но эти инструменты довольно неуклюже смотрятся без использования специальных операторов, которых нет в нашем языке, а писать кастомные операторы считается дурным тоном. Поэтому рассмотрим более интуитивный способ: напишем специальную функцию.</p>
+
+<pre><code class="language-swift">@discardableResult
+func perform&lt;Result, U, Z&gt;(
+    _ transform: (U, Z) throws -&gt; Result,
+    _ optional1: U?,
+    _ optional2: Z?) rethrows -&gt; Result? {
+
+    guard
+        let optional1 = optional1,
+        let optional2 = optional2
+        else {
+            return nil
+    }
+
+    return try transform(optional1, optional2)
+}
+</code></pre>
+
+<p>Она принимает в качестве аргументов два опциональных значения и функцию с двумя аргументами. Если оба опционала имеют значения, к ним применяется функция.
+Теперь мы можем работать с несколькими опционалами, не разворачивая их.</p>
+
+<pre><code class="language-swift">let a: Int? = 3
+let b: Int? = 7
+let result = perform(+, a, b)
+</code></pre>
+
+<p>У второй монады, Result, тоже имеются методы map и flatMap. А значит, с ней можно работать точно так же.</p>
+
+<pre><code class="language-swift">func getIntFromDB() -&gt; Int
+func getIntFromServer() -&gt; Result&lt;Int, ServerError&gt;
+
+func summInts() -&gt; Result&lt;Int, ServerError&gt; {
+    let intFromDB = getIntFromDB()
+    let intFromServer = getIntFromServer()
+
+    return intFromServer.map { x in x + intFromDB }
+}
+
+if case .success(let result) = summInts() {
+    print(result)
+}
+</code></pre>
+
+<p>Собственно, это и роднит монады между собой — возможность работать со значением внутри контейнера, не извлекая его. На мой взгляд, это делает код лаконичнее. Но если вам не нравится, просто используйте явные извлечения, это не противоречит парадигме ФП.</p>
+
+<h2 id="пример-сокращаем-число-грязных-функций">Пример: сокращаем число «грязных» функций</h2>
+
+<p>К сожалению, в реальных программах повсюду встречаются глобальные состояния и сайд-эффекты — сетевые запросы, источники данных, UI. И только чистыми функциями обойтись нельзя. Но это не значит, что ФП для нас полностью недоступно: мы можем постараться уменьшить число грязных функций, которых обычно очень много.</p>
+
+<p>Рассмотрим небольшой пример, приближенный к продакшн-разработке. Построим UI, конкретно форму входа. Форма имеет некоторые ограничения:</p>
+
+<ol>
+<li>Логин не короче 3 символов</li>
+<li>Пароль не короче 6 символов</li>
+<li>Кнопка «Войти» активна, если оба поля валидны</li>
+<li>Цвет рамки поля отражает его состояние, черная — валидно, красная — не валидно</li>
+</ol>
+
+<p>Код, описывающий эти ограничения, может выглядеть так:</p>
+
+<p>Обработка любого пользовательского ввода</p>
+
+<pre><code class="language-swift">@IBAction func textFieldTextDidChange() {
+    // 1. Зависимость от глобального стейта
+    // 2. Явное извлечение
+    guard
+        let login = loginView.text,
+        let password = passwordView.text else {
+
+        // 3. Сайд-эффект            
+        loginButton.isEnabled = false
+        return
+    }
+
+    let loginIsValid = login.count &gt; constants.loginMinLenght
+
+    if loginIsValid {
+        // 4. Сайд-эффект
+        loginView.layer.borderColor = constants.normalColor
+    }
+
+    let passwordIsValid = password.count &gt; constants.passwordMinLenght
+
+    if passwordIsValid {
+        // 5. Сайд-эффект
+        passwordView.layer.borderColor = constants.normalColor
+    }
+
+    // 6. Сайд-эффект
+    loginButton.isEnabled = loginIsValid &amp;&amp; passwordIsValid
+}
+</code></pre>
+
+<p>Обработка завершения ввода логина:</p>
+
+<pre><code class="language-swift">@IBAction func loginDidEndEdit() {
+    let color: CGColor
+    // 1. Зависмость от глобального стейта
+    // 2. Явное извлечение
+    if let login = loginView.text, login.count &gt; 3 {
+        color = constants.normalColor
+    } else {
+        color = constants.errorColor
+    }
+    // 3. Сайд эфект
+    loginView.layer.borderColor = color
+}
+</code></pre>
+
+<p>Обработка завершения ввода пароля:</p>
+
+<pre><code class="language-swift">@IBAction func passwordDidEndEdit() {
+    let color: CGColor
+    // 1. Зависимость от глобального стейта
+    // 2. Явное извлечение
+    if let password = passwordView.text, password.count &gt; 6 {
+        color = constants.normalColor
+    } else {
+        color = constants.errorColor
+    }
+    // 3. Сайд-эффект
+    passwordView.layer.borderColor = color
+}
+</code></pre>
+
+<p>Нажатие на кнопку войти:</p>
+
+<pre><code class="language-swift">@IBAction private func loginPressed() {
+    // 1. Зависимость от глобального стейта
+    // 2. Явное извлечение
+    guard
+        let login = loginView.text,
+        let password = passwordView.text else {
+            return
+    }
+
+    auth(login: login, password: password) { [weak self] user, error in
+        if let user = user {
+            /* успех */
+        } else if error is AuthError {
+            guard let `self` = self else { return }
+            // 3. Сайд-эффект
+            self.passwordView.layer.borderColor = self.constants.errorColor
+            // 4. Сайд-эффект
+            self.loginView.layer.borderColor = self.constants.errorColor
+        } else {
+            /* Другие ошибки */
+        }
+    }
+}
+</code></pre>
+
+<p>Возможно, этот код не самый лучший, но в целом он неплох и работает. Правда, у него есть ряд проблем:</p>
+
+<ul>
+<li>4 явных извлечения;</li>
+<li>4 зависимости от глобального стейта;</li>
+<li>8 сайд-эффектов;</li>
+<li>неочевидные конечные состояния;</li>
+<li>нелинейный флоу.</li>
+</ul>
+
+<p>Главная проблема состоит в том, что нельзя просто взять и сказать, что происходит с нашим экраном. Глядя на один метод, мы видим, что он делает с глобальным стейтом, но не знаем, кто, где и когда еще трогает стейт. В итоге, чтобы разобраться в происходящем, надо найти все точки работы с вьюшками и понять, в каком порядке какие воздействия происходят. Удержать все это в голове очень сложно.</p>
+
+<p>Если процесс изменения состояния линейный, можно изучать его шаг за шагом, что снизит когнитивную нагрузку на программиста.</p>
+
+<p>Попробуем изменить пример, сделав его более функциональным.</p>
+
+<p>Для начала определим модель, описывающую текущее состояние экрана. Это позволит точно знать, какая информация необходима для работы.</p>
+
+<pre><code class="language-swift">struct LoginOutputModel {
+    let login: String
+    let password: String
+
+    var loginIsValid: Bool {
+        return login.count &gt; 3
+    }
+
+    var passwordIsValid: Bool {
+        return password.count &gt; 6
+    }
+
+    var isValid: Bool {
+        return loginIsValid &amp;&amp; passwordIsValid
+    }
+}
+</code></pre>
+
+<p>Модель, описывающую изменения, применяемые к экрану. Она нужна, чтобы точно знать, что мы будем менять.</p>
+
+<pre><code class="language-swift">struct LoginInputModel {
+    let loginBorderColor: CGColor?
+    let passwordBorderColor: CGColor?
+    let loginButtonEnable: Bool?
+    let popupErrorMessage: String?
+}
+</code></pre>
+
+<p>События, которые могут привести к новому состоянию экрана. Так мы точно будем знать, какие действия изменяют экран.</p>
+
+<pre><code class="language-swift">enum Event {
+    case textFieldTextDidChange
+    case loginDidEndEdit
+    case passwordDidEndEdit
+    case loginPressed
+    case authFailure(Error)
+}
+</code></pre>
+
+<p>Теперь опишем главный метод изменения. Эта чистая функция на основе события текущего состояния собирает новое состояние экрана.</p>
+
+<pre><code class="language-swift">func makeInputModel(
+    event: Event,
+    outputModel: LoginOutputModel?) -&gt; LoginInputModel {
+
+    switch event {
+    case .textFieldTextDidChange:
+        let mapValidToColor: (Bool) -&gt; CGColor? = { $0 ? normalColor : nil }
+    return LoginInputModel(
+            loginBorderColor: outputModel
+                .map { $0.loginIsValid }
+                .flatMap(mapValidToColor),
+            passwordBorderColor: outputModel
+                .map { $0.passwordIsValid }
+                .flatMap(mapValidToColor),
+            loginButtonEnable: outputModel?.passwordIsValid
+            )
+    case .loginDidEndEdit:
+        return LoginInputModel(/**/)
+    case .passwordDidEndEdit:
+        return LoginInputModel(/**/)
+    case .loginPressed:
+        return LoginInputModel(/**/)
+    case .authFailure(let error) where error is AuthError:
+        return LoginInputModel(/**/)
+    case .authFailure:
+        return LoginInputModel(/**/)
+    }
+}
+</code></pre>
+
+<p>Самое важное в том, что этот метод единственный, кому позволено заниматься конструированием нового состояния — и он чистый. Его можно изучить шаг за шагом. Увидеть, как события преобразуют экран из точки А в точку Б. Если что-то сломается, то проблема точно здесь. И это легко тестировать.</p>
+
+<p>Добавим вспомогательное свойство для получения текущего состояния, это единственный метод, зависящий от глобального состояния.</p>
+
+<pre><code class="language-swift">var outputModel: LoginOutputModel? {
+    return perform(LoginOutputModel.init, loginView.text, passwordView.text)
+}
+</code></pre>
+
+<p>Добавим еще один «грязный» метод для создания сайд-эффектов изменения экрана.</p>
+
+<pre><code class="language-swift">func updateView(_ event: Event) {
+
+    let inputModel = makeInputModel(event: event, outputModel: outputModel)
+        if let color = inputModel.loginBorderColor {
+        loginView.layer.borderColor = color
+    }
+    if let color = inputModel.passwordBorderColor {
+        passwordView.layer.borderColor = color
+    }
+    if let isEnable = inputModel.loginButtonEnable {
+            loginButton.isEnabled = isEnable
+    }
+    if let error = inputModel.popupErrorMessage {
+            showPopup(error)
+    }
+}
+</code></pre>
+
+<p>Хотя метод updateView и не является чистым, но это единственное место, где меняются свойства экрана. Первый и последний пункт в цепочке вычислений. И если что-то пошло не так, именно тут будет стоять брейкпоинт.</p>
+
+<p>Осталось только запустить преобразования в нужных местах.</p>
+
+<pre><code class="language-swift">@IBAction func textFieldTextDidChange() {
+    updateView(.textFieldTextDidChange)
+}
+
+@IBAction func loginDidEndEdit() {
+    updateView(.loginDidEndEdit)
+}
+
+@IBAction func passwordDidEndEdit() {
+    updateView(.passwordDidEndEdit)
+}
+</code></pre>
+
+<p>Метод loginPressed вышел немного уникальным.</p>
+
+<pre><code class="language-swift">@IBAction private func loginPressed() {
+
+    updateView(.loginPressed)
+
+    let completion: (Result&lt;User, Error&gt;) -&gt; Void = { [weak self] result in
+        switch result {
+        case .success(let user):
+            /* успех */                 
+        case .failure(let error):
+            self?.updateView(.authFailure(error))
+        }
+    }
+
+    outputModel.map {
+        auth(login: $0.login, password: $0.password, completion: completion)
+    }
+
+}
+</code></pre>
+
+<p>Дело в том, что нажатие на кнопку «Войти» запускает две цепочки вычислений, что не запрещается.</p>
+
+<h2 id="заключение">Заключение</h2>
+
+<p>До начала изучения ФП я делал сильный акцент на парадигмах программирования. Для меня было важно, чтобы код следовал ООП, я не любил статические функции или объекты без состояний, не писал глобальных функций.</p>
+
+<p>Сейчас мне кажется, что все те вещи, что я считал частью той или иной парадигмы — довольно условны. Главное — это чистый, понятный код. Для достижения этой цели можно использовать все, что возможно: чистые функции, классы, монады, наследование, композиция, вывод типов. Все они хорошо уживаются вместе и делают код лучше — достаточно применять их к месту.</p>
+</div>
+
+    
+    
+    
+
+    
+    
+        <h4 class="page-header">Comments</h4>
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jonfir" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+
