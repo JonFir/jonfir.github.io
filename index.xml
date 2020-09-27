@@ -6,10 +6,31 @@
     <description>Recent content on JonFir</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Oct 2019 14:41:24 +0700</lastBuildDate>
+    <lastBuildDate>Sun, 27 Sep 2020 19:47:51 +0700</lastBuildDate>
     
 	<atom:link href="https://jonfir.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Полезный контент для iOS разработчика (Обновляется)</title>
+      <link>https://jonfir.github.io/posts/ios-materials/</link>
+      <pubDate>Sun, 27 Sep 2020 19:47:51 +0700</pubDate>
+      
+      <guid>https://jonfir.github.io/posts/ios-materials/</guid>
+      <description>Книги [en] Programming iOS 13: Dive Deep into Views, View Controllers, and Frameworks amazon
+[en][ru] Мэтт Гэлловей: Сила Objective-C 2.0. лабиринт/amazon
+Блоги [en] Хардкорный блог о iOS
+[en] objc.io
+[en] swiftbysundell
+[en] nshipster
+[en] raywenderlich
+[en] pspdfkit
+[en] swiftui-lab
+[en] hackingwithswift
+Статьи [en] @State, @ObjectBinding and @EnvironmentObject in SwiftUI
+[ru] Swift против Rust — бенчмаркинг на Linux
+ Читать с комментариями. Особенно интересно тем, что в итоге был найден способ ускорить swift пример более чем в 10 раз</description>
+    </item>
     
     <item>
       <title>Функциональный Swift — это просто</title>
