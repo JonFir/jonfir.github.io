@@ -5,7 +5,7 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>404 Page not found</title>
+        <title>Подборка материалов по swift concurrency (async/await)</title>
         
         <style>
 
@@ -85,7 +85,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">404 Page not found</a>
+                    <a class="navbar-brand visible-xs" href="#">Подборка материалов по swift concurrency (async/await)</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -123,10 +123,65 @@
 
 
 <main>
-    <div class="intro">
-        <h1>¯\_(ツ)_/¯</h1>
-        <h2>Nothing here</h2>
+
+    <div>
+        <h2>Подборка материалов по swift concurrency (async/await)</h2>
+        <h5>January 7, 2022</h5>
+        
+
     </div>
+
+    <div align="start" class="content"><p>В прошлом году apple представила разработчикам долгожданные async/await, а так же actor, AsyncSequence, и еще много чего. Все эти штуки получили название &ldquo;swift concurrency&rdquo;. И чтобы вам было проще разобраться с новыми технологиями я собрал полную подборку материалов по теме.</p>
+<h2 id="самое-основное">Самое основное</h2>
+<p>[en] <a href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html">Официальная документация</a></p>
+<p>[ru] <a href="https://swiftbook.ru/content/languageguide/concurrency/">Перевод официальной документации</a></p>
+<p>[en] <a href="https://www.hackingwithswift.com/quick-start/concurrency">Ответы на часто задаваемые вопросы, с примерами</a></p>
+<p>[en] <a href="https://www.raywenderlich.com/books/modern-concurrency-in-swift/v1.0">Книга новичка</a></p>
+<h3 id="wwdc-2021">WWDC 2021</h3>
+<p>[en] <a href="https://developer.apple.com/videos/play/wwdc2021/10132/">Первое знакомство async/await</a></p>
+<p>[en] <a href="https://developer.apple.com/videos/play/wwdc2021/10134/">Более подробный разбор async/await (structured concurrency)</a></p>
+<p>[en] <a href="https://developer.apple.com/videos/play/wwdc2021/10133/">Потокобезопасность с actors</a></p>
+<p>[en] <a href="https://developer.apple.com/videos/play/wwdc2021/10194/">Пример внедрения в приложение</a></p>
+<p>[en] <a href="https://developer.apple.com/videos/play/wwdc2021/10254/">Swift concurrency под капотом</a></p>
+<h2 id="дополнительные-статьи">Дополнительные статьи</h2>
+<p>[en] <a href="https://swiftrocks.com/how-actors-work-internally-in-swift">Акторы подкапотом</a></p>
+<p>[en] <a href="https://swiftrocks.com/how-asyncsequence-works-internally-in-swift">AsyncSequence под капотом</a></p>
+<p>[en] <a href="https://www.avanderlee.com/swift/mainactor-dispatch-main-thread/">Использование MainActor</a></p>
+<p>[en] <a href="https://forums.swift.org/t/communicating-between-two-concurrent-tasks/54240">Синхронизация двех Task</a></p>
+<p>[ru] <a href="https://habr.com/ru/company/citymobil/blog/571360/">Обзор на swift concurrency</a></p>
+<p>[ru] <a href="https://habr.com/ru/company/otus/blog/588540/">Акторы подкапотом (перевод)</a></p>
+<p>[ru] <a href="https://habr.com/ru/company/otus/blog/571580/">Использование MainActor (перевод)</a></p>
+</div>
+
+    
+    
+    
+
+    
+    
+        <h4 class="page-header">Comments</h4>
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jonfir" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
 </main>
 
         <footer>

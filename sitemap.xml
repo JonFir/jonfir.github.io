@@ -1,43 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://jonfir.github.io/</loc>
-    <lastmod>2020-09-27T19:47:51+07:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2022-01-07T17:48:17+07:00</lastmod>
+  </url><url>
     <loc>https://jonfir.github.io/posts/</loc>
-    <lastmod>2020-09-27T19:47:51+07:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2022-01-07T17:48:17+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.github.io/posts/async-await-materials/</loc>
+    <lastmod>2022-01-07T17:48:17+07:00</lastmod>
+  </url><url>
     <loc>https://jonfir.github.io/posts/ios-materials/</loc>
     <lastmod>2020-09-27T19:47:51+07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jonfir.github.io/posts/easy-fp-swift/</loc>
     <lastmod>2019-10-29T14:41:24+07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jonfir.github.io/posts/ios-project-structure/</loc>
     <lastmod>2019-10-28T12:40:40+07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jonfir.github.io/posts/ioc-ios/</loc>
     <lastmod>2018-07-24T15:23:11+07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jonfir.github.io/categories/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jonfir.github.io/tags/</loc>
   </url>
-  
 </urlset>
