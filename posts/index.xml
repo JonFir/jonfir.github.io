@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on JonFir</title>
     <link>https://jonfir.github.io/posts/</link>
     <description>Recent content in Posts on JonFir</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 07 Jan 2022 17:48:17 +0700</lastBuildDate><atom:link href="https://jonfir.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <language>ru-RU</language>
+    <lastBuildDate>Mon, 11 Jan 2021 11:30:03 +0000</lastBuildDate><atom:link href="https://jonfir.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Подборка материалов по swift concurrency (async/await)</title>
       <link>https://jonfir.github.io/posts/async-await-materials/</link>
-      <pubDate>Fri, 07 Jan 2022 17:48:17 +0700</pubDate>
+      <pubDate>Mon, 11 Jan 2021 11:30:03 +0000</pubDate>
       
       <guid>https://jonfir.github.io/posts/async-await-materials/</guid>
-      <description>В прошлом году apple представила разработчикам долгожданные async/await, а так же actor, AsyncSequence, и еще много чего. Все эти штуки получили название &amp;ldquo;swift concurrency&amp;rdquo;. И чтобы вам было проще разобраться с новыми технологиями я собрал полную подборку материалов по теме.
-Самое основное [en] Официальная документация
-[ru] Перевод официальной документации
-[en] Ответы на часто задаваемые вопросы, с примерами
-[en] Книга новичка
-WWDC 2021 [en] Первое знакомство async/await
-[en] Более подробный разбор async/await (structured concurrency)</description>
+      <description>Документация, статьи, видео для полного погружения в тему</description>
     </item>
     
     <item>
@@ -49,8 +43,7 @@ WWDC 2021 [en] Первое знакомство async/await
       <pubDate>Tue, 29 Oct 2019 14:41:24 +0700</pubDate>
       
       <guid>https://jonfir.github.io/posts/easy-fp-swift/</guid>
-      <description>В статьях о функциональном программировании много пишут о том, как ФП подход улучшает разработку: код становится легко писать, читать, разбивать на потоки и тестировать, построить плохую архитектуру невозможно~~, а волосы становятся мягкими и шелковистыми~~.
-Недостаток один — высокий порог входа. Пытаясь разобраться в ФП, я столкнулся с огромным количеством теории, функторами, монадами, теорией категорий и алгебраическими типами данных. А как применять ФП на практике, было неясно. Кроме того, примеры приводились на незнакомых мне языках — хаскеле и скале.</description>
+      <description>Быстрое и простое погружение в ФП на swift</description>
     </item>
     
     <item>
@@ -59,8 +52,7 @@ WWDC 2021 [en] Первое знакомство async/await
       <pubDate>Mon, 28 Oct 2019 12:40:40 +0700</pubDate>
       
       <guid>https://jonfir.github.io/posts/ios-project-structure/</guid>
-      <description>Введение Привет. В этой статье поговорим о структуре папок в проекте. Это не популярная тема для статей, но правильная структура папок влияет на удобство навигации.
-Часто проект делится на три части. Первая часть, UI, содержит элементы интерфейса, UIViewController’ы, презентеры, вьюмодели, интеракторы и иже с ними. Вторая часть бизнес логика. Которая заканчивается на взаимодействие с сетью и рилмом. Третья часть это DTO, с парсерами. Причина кроется в специфике iOS приложений, ведь это тонкие клиенты.</description>
+      <description>Best practices по структуре папок в проекте</description>
     </item>
     
     <item>
@@ -69,8 +61,7 @@ WWDC 2021 [en] Первое знакомство async/await
       <pubDate>Tue, 24 Jul 2018 15:23:11 +0700</pubDate>
       
       <guid>https://jonfir.github.io/posts/ioc-ios/</guid>
-      <description>В последнее время я все чаще слышу о DI. Им интересуются мои студенты в Geek University, его упоминают в чатах. Хотя паттерн далеко не молод, многие не совсем верно его понимают. Часто под DI подразумевают фреймворк, например, typhoon или swinject. В статье подробно разберем принципы реализации DI, а также принцип IoC. Если интересно, прошу под кат.
-DI (внедрение зависимости, англ. Dependency injection) — процесс предоставления внешней зависимости программному компоненту. Является специфичной формой «IoC», когда она применяется к управлению зависимостями.</description>
+      <description>Полная теория о DI и service locator</description>
     </item>
     
   </channel>

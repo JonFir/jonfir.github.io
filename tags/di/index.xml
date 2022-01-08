@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>DI on JonFir</title>
+    <link>https://jonfir.github.io/tags/di/</link>
+    <description>Recent content in DI on JonFir</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-RU</language>
+    <lastBuildDate>Tue, 24 Jul 2018 15:23:11 +0700</lastBuildDate><atom:link href="https://jonfir.github.io/tags/di/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Инверсия управления в iOS</title>
+      <link>https://jonfir.github.io/posts/ioc-ios/</link>
+      <pubDate>Tue, 24 Jul 2018 15:23:11 +0700</pubDate>
+      
+      <guid>https://jonfir.github.io/posts/ioc-ios/</guid>
+      <description>Полная теория о DI и service locator</description>
+    </item>
+    
+  </channel>
+</rss>
