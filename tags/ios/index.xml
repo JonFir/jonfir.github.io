@@ -32,6 +32,7 @@
 [en] pspdfkit
 [en] swiftui-lab
 [en] hackingwithswift
+[en] Крутой блог о SwiftUI
 Статьи [en] @State, @ObjectBinding and @EnvironmentObject in SwiftUI
 [ru] Swift против Rust — бенчмаркинг на Linux
 Читать с комментариями. Особенно интересно тем, что в итоге был найден способ ускорить swift пример более чем в 10 раз</description>
