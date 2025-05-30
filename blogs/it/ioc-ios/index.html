@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>Инверсия управления в iOS | Евгений Елчев</title>
+    <meta name="description" content="Полная теория о DI и service locator">
+    <meta name="keywords" content="разработка, программирование, блог, технологии, веб-разработка">
+    <meta name="author" content="Евгений Елчев">
+    
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://jonfir.ru/blogs/it/ioc-ios/">
+    <meta property="og:title" content="Инверсия управления в iOS | Евгений Елчев">
+    <meta property="og:description" content="Полная теория о DI и service locator">
+    <meta property="og:image" content="https://jonfir.ru/images/default-og.jpg">
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://jonfir.ru/blogs/it/ioc-ios/">
+    <meta name="twitter:title" content="Инверсия управления в iOS | Евгений Елчев">
+    <meta name="twitter:description" content="Полная теория о DI и service locator">
+    <meta name="twitter:image" content="https://jonfir.ru/images/default-og.jpg">
+    
+    
+    <link rel="canonical" href="https://jonfir.ru/blogs/it/ioc-ios/">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+    <div class="site-header">
+        <div class="logo">
+            <a href="https://jonfir.ru/">Евгений Елчев</a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="https://jonfir.ru/">Главная</a></li>
+                <li><a href="/about/">Обо мне</a></li>
+                <li class="dropdown">
+                    <a href="/favorites/">То что я люблю</a>
+                    <ul class="dropdown-content">
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/games/">Игры</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/books/">Книги</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/movies/">Фильмы и Сериалы</a></li>
+                            
+                        
+                    </ul>
+                </li>
+                <li><a href="/wishlist/">Вишлист</a></li>
+                <li class="dropdown">
+                    <a href="/blogs/">Блоги</a>
+                    <ul class="dropdown-content">
+                        
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/it/">IT</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/irl/">IRL</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/managment/">Менеджмент</a></li>
+                            
+                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</header>
+
+        <main>
+            
+<article class="single-page">
+    <div class="page-header">
+        <h1>Инверсия управления в iOS</h1>
+        
+        <div class="post-meta">
+            <span><i class="far fa-calendar"></i> 24 января 2018</span>
+            <span><i class="far fa-clock"></i> 16 мин</span>
+        </div>
+        
+    </div>
+    <div class="page-content">
+        <p>В последнее время я все чаще слышу о DI. Им интересуются мои студенты в Geek University, его упоминают в чатах. Хотя паттерн далеко не молод, многие не совсем верно его понимают.
+Часто под DI подразумевают фреймворк, например, typhoon или swinject. В статье подробно разберем принципы реализации DI, а также принцип IoC.</p>
+<blockquote>
+<p>DI (внедрение зависимости, англ. Dependency injection) — процесс предоставления внешней зависимости программному компоненту. Является специфичной формой «IoC», когда она применяется к управлению зависимостями. В полном соответствии с принципом единственной ответственности объект отдаёт заботу о построении требуемых ему зависимостей внешнему, специально предназначенному для этого общему механизму.</p></blockquote>
+<blockquote>
+<p>IoC (Инверсия управления, англ. Inversion of Control) — важный принцип объектно-ориентированного программирования, используемый для уменьшения зацепления (связанности) в компьютерных программах.</p></blockquote>
+<p>Несмотря на то, что статья о DI, начнем мы свой путь не с него, а с IoC, по той причине, что DI -это лишь один из видов IoC и картину нужно видеть целиком.</p>
+<h2 id="ioc">IoC</h2>
+<p>Для начала разберемся с тем, что такое управление. Возьмем самый простой пример — консольный «Hello world»:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> firstWord = <span style="color:#e6db74">&#34;hello&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> secondWord = <span style="color:#e6db74">&#34;world!&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> phrase = firstWord <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> secondWord
+</span></span><span style="display:flex;"><span>print(phrase)
+</span></span></code></pre></div><p>В данном примере наши команды управляют данными, которые представлены строковыми литералами и переменными. На этом уровне абстракции больше нет никакого управления, но мы можем его добавить с помощью тернарного оператора:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> number = arc4random_uniform(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> firstWord = number == <span style="color:#ae81ff">0</span> ? <span style="color:#e6db74">&#34;hello&#34;</span> : <span style="color:#e6db74">&#34;bye&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> secondWord = <span style="color:#e6db74">&#34;world!&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> phrase = firstWord <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> secondWord
+</span></span><span style="display:flex;"><span>print(phrase)
+</span></span></code></pre></div><p>Наш код стал неоднозначен, и теперь, в зависимости от случайного числа, строка в консоле изменится. Другими словами, данные управляют нашей программой. Это самый банальный и простой пример инверсии управления.</p>
+<p>В типичном iOS-приложении управление находится повсюду. Система, пользователь, сервер управляют приложением. Приложение управляет сервером, пользователем и системой. Наш код содержит огромное количество объектов, которые тоже управляют друг другом. Например, объект класса <strong>AuthViewController</strong> может управлять объектом класса <strong>AuthService</strong>.</p>
+<p>Такое управление объектами в свою очередь строится из нескольких аспектов. Во-первых, <strong>AuthViewController</strong> вызывает методы <strong>AuthService</strong>, во-вторых, он его создает. Все это приводит к высокой связанности объектов, использование <strong>AuthViewController</strong> становится невозможным без <strong>AuthService</strong>. Это называется зависимостью, <strong>AuthViewController</strong> полностью зависим от <strong>AuthService</strong>.</p>
+<p>Есть мнение, что ничего страшного в таких зависимостях нет. Как правило, наши контроллеры не переиспользуются и идут рука об руку вместе со своими сервисами все время поддержки приложения. Но те, кто занимался поддержкой долгоживущих приложений, знает, что это не так. Требования постоянно меняются, мы находим баги, меняем flow, делаем редизайн. Если при этом ваше приложение сложнее чем несколько контроллеров с парой кнопок и сервисов, которые просто обертки для URLSession, то оно тонет в зависимостях. Зависимости между классами образуют паутину, иногда можно обнаружить циклические зависимости. Вы не можете вносить изменения в ваши классы, потому что не ясно, как и где они используются, вам проще создать новый метод, чем изменить старый. Замена класса и вовсе превращается в боль. Вызов его конструктора раскидан по различным методам, которые вы тоже вынуждены изменять. В конце концов, вы перестаете понимать, что происходит, код превращается в обычный текст и, вооружившись поиском, вы начинаете заменять слова или предложения в этом тексте, проверяя только ошибки компилятора.</p>
+<p>Чтобы не допустить такого исхода событий, придумано множество принципов и техник. Например, один из принципов SOLID принцип DIP описывает, как уменьшить связанность при вызове методов и это является IoC.</p>
+<blockquote>
+<p>DIP (принцип инверсии зависимостей, англ. dependency inversion principle) — один пяти из принципов SOLID.</p>
+<p>Формулировка:</p>
+<p>Модули верхних уровней не должны зависеть от модулей нижних уровней. Оба типа модулей должны зависеть от абстракций.</p>
+<p>Абстракции не должны зависеть от деталей. Детали должны зависеть от абстракций.</p></blockquote>
+<p>Но все же, когда кто-то говорит «<strong>IoC</strong>», он имеет ввиду инверсию управления при создании зависимостей. Далее я буду использовать его только в этом значении. Кстати, DIP практически невозможно реализовать без <strong>IoC</strong>, но не наоборот. Использование <strong>IoC</strong> не гарантирует соблюдение DIP. Еще один важный нюанс. DIP и DI — это разные принципы.</p>
+<h2 id="на-пути-к-ioc">На пути к IoC</h2>
+<p>На самом деле, IoC — это очень простая концепция, и не нужно читать много литературы, уходить на несколько лет в Тибет, чтобы постичь дзен и начать ее использовать.</p>
+<p>В качестве примера я буду рассматривать класс «рыцаря» (<strong>Knight</strong>) и его «доспехов» (<strong>Armor</strong>), все классы показаны ниже.</p>
+<p><img src="/images/ioc-ios-1.png" alt="class scheme"></p>
+<p>Теперь посмотрим на реализацию класса <strong>Armor</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> boots: Boots?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> pants: Pants?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> belt: Belt?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> chest: Chest?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> bracers: Bracers?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> gloves: Gloves?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> helmet: Helmet?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">configure</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.boots = Boots()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.pants = Pants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.belt = Belt()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.chest = Chest()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.bracers = Bracers()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.gloves = Gloves()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.helmet = Helmet()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>и <strong>Knight</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> armor: Armor?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">prepareForBattle</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.armor = Armor()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.armor.configure()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>На первый взгляд — все хорошо. Если нам понадобится рыцарь, мы просто его создадим.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> knight = Knight()
+</span></span></code></pre></div><p>Но не все так просто. К сожалению, суррогатные примеры не могут передать всю боль, которую несет такой подход.</p>
+<p>Наши классы спаяны вместе. В методе make у Armor создается 7 классов. Это делает классы закостенелыми. При таком подходе мы не можем просто определить, где и как создается класс. Если потребуется отнаследоваться от брони и создать, например, парадную броню, заменив шлем, нам придется переопределять весь метод.</p>
+<p>Единственный плюс в таком подходе — это скорость написания кода, ведь при создании классов не приходится думать о будущем.</p>
+<p>Вот небольшой пример, как это может выглядеть в жизни:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FightViewController</span>: BaseViewController {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> titleLabel: UIView!
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> knightList: UIView!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">viewDidLoad</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>.viewDidLoad()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.title = <span style="color:#e6db74">&#34;Турнир&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Далее в коде смешаны не связанные действия, что затрудняет изменение их по отдельности</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Создание зависимости</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> backgroundView = UIView()
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Добавление на экран</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.view.addSubview(backgroundView)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Настройка внешнего вида</span>
+</span></span><span style="display:flex;"><span>        backgroundView.backgroundColor = UIColor.red
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Настройка позиционирования</span>
+</span></span><span style="display:flex;"><span>        backgroundView.translatesAutoresizingMaskIntoConstraints = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        backgroundView.translatesAutoresizingMaskIntoConstraints = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        backgroundView.topAnchor.constraint(equalTo: topAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> title = Views.BigHeader.View()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.titleLabel = title
+</span></span><span style="display:flex;"><span>        title.labelView.text = <span style="color:#e6db74">&#34;labelView&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.view.addSubview(title)
+</span></span><span style="display:flex;"><span>        title.translatesAutoresizingMaskIntoConstraints = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        title.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        title.topAnchor.constraint(equalTo: topAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        title.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        title.heightAnchor.constraint(equalToConstant: <span style="color:#ae81ff">56</span>).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> knightList = Views.DataView.View()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.knightList = knightList
+</span></span><span style="display:flex;"><span>        knightList.titleView.text = <span style="color:#e6db74">&#34;knightList&#34;</span>
+</span></span><span style="display:flex;"><span>        knightList.dataView.text = <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.view.addSubview(knightList)
+</span></span><span style="display:flex;"><span>        knightList.translatesAutoresizingMaskIntoConstraints = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        knightList.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        knightList.topAnchor.constraint(equalTo: title.topAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        knightList.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        knightList.heightAnchor.constraint(equalToConstant: <span style="color:#ae81ff">45</span>).isActive = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Такой код легко встретить в чьем-нибудь проекте. Он прекрасно иллюстрирует, что создание классов зависимостей в произвольных местах — не очень хорошая идея. К тому же, в отличии от брони, элементы здесь не только создаются, но настраиваются и даже позиционируются. Код превратился в кашу.</p>
+<p>Как это можно улучшить? Воспользоваться паттерном «фабричный метод». Он не решит всех проблем, но сделает класс более гибким.</p>
+<blockquote>
+<p>Фабричный метод (англ. Factory Method, также известен как Виртуальный конструктор (англ. Virtual Constructor)) — порождающий шаблон проектирования, предоставляющий подклассам интерфейс для создания экземпляров некоторого класса.</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> boots: Boots?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> pants: Pants?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">configure</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.boots = makeBoots()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.pants = makePants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Уже лучше, создание зависимостей вынесено в отдельные методы. Их просто найти, просто изменить без риска повредить логику класса. При наследовании мы можем их переопределять и тем самым переопределять зависимости.</p>
+<p>Но все же, нашему классу не стоит знать о подробностях создания своих зависимостей, он должен просто использовать их. Как с этим бороться? Необходимо выносить порождающую логику из класса на уровень выше.</p>
+<blockquote>
+<p>Порождающая логика — код, создающий экземпляры класса или структуры. Другими словами — код, порождающий объекты.</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> boots: Boots?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> pants: Pants?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">configure</span>(boots: Boots?, pants: Pants?) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.boots = boots
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.pants = pants
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Теперь наш класс <strong>Armor</strong> понятия не имеет как создаются его зависимости, они просто передаются в качестве аргументов. Это дает максимальную гибкость. Мы даже можем заменить классы на протоколы и полностью абстрагироваться от деталей реализации.</p>
+<p>Но вот у нашего класса <strong>Knight</strong> дела идут не так хорошо.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> armor: Armor?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">preapreForBattle</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.armor = Armor()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> boots = makeBoots()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> pants = makePants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.armor?.make(boots: boots, pants: pants)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Он создает все части своей брони. Можно сказать, наш рыцарь сам себе кузнец.
+Это неправильно, рыцари не должны ковать себе броню, не их уровня задача, но как тогда быть? Можно вновь вынести порождающую логику на уровень выше, но тогда класс на вершине графа будет огромной свалкой по созданию зависимостей.</p>
+<p>На помощь нам придет другой порождающий паттерн — «фабрика».</p>
+<blockquote>
+<p>Фабрика (англ. Factory) — объект, создающий другие объекты.</p></blockquote>
+<p>Мы построим кузницу, в которой будут изготавливаться части брони и собираться в единый комплект.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Forge</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeArmor</span>() -&gt; Armor {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> armor = Armor()
+</span></span><span style="display:flex;"><span>        armor.boots = makeBoots()
+</span></span><span style="display:flex;"><span>        armor.pants = makePants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> armor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Классы Armor и Knight избавятся от порождающей логики и будут смотреться лаконично.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> boots: Boots?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> pants: Pants?
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> armor: Armor?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Теперь перед нами встает вопрос: как, где и когда забрать зависимости из «фабрики» и передать нашим классам. А, значит, мы наконец пришли к понятиям DI и SL.</p>
+<h2 id="сервис-локатор-sl">Сервис локатор (SL)</h2>
+<p>Начнем, пожалуй, с этого паттерна. Во-первых, он проще. Во-вторых, многие думают, что это и есть DI, хотя это не так.</p>
+<blockquote>
+<p>SL (сервис локатор, англ. service locator) — это шаблон проектирования, используемый в разработке программного обеспечения для инкапсуляции процессов, связанных с получением какого-либо сервиса с сильным уровнем абстракции. Этот шаблон использует центральный реестр, известный как «локатор сервисов», который по запросу возвращает информацию (как правило, это объекты), необходимую для выполнения определенной задачи.</p></blockquote>
+<p>В чем же его суть? Классу для того, чтобы получить зависимости, в конструкторе передается «фабрика», из которой он сам выбирает, что же ему получить.</p>
+<p>В этом случае наши классы будут выглядеть так:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Forge</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeArmor</span>() -&gt; Armor {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> armor = Armor(forge: <span style="color:#66d9ef">self</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> armor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">let</span> forge: Forge
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> armor: Armor?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">init</span>(forge: Forge) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.forge = forge
+</span></span><span style="display:flex;"><span>        configure()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">configure</span>() {
+</span></span><span style="display:flex;"><span>        armor = forge.makeArmor()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">let</span> forge: Forge
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> boots: Boots?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> pants: Pants?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">init</span>(forge: Forge) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.forge = forge
+</span></span><span style="display:flex;"><span>        configure()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">configure</span>() {
+</span></span><span style="display:flex;"><span>        boots = forge.makeBoots()
+</span></span><span style="display:flex;"><span>        pants = forge.makePants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> forge = Forge()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> knight = Knight(forge: forge)
+</span></span></code></pre></div><p>Лично у меня такой подход вызывает двоякое чувство. С одной стороны, порождающая логика находится в «фабрике», с другой стороны, процесс получения зависимостей несколько запутан. Но самый главный недостаток состоит в том, что, глядя на класс, нельзя однозначно определить его зависимости. Он может получить из «фабрики» все что угодно, типичной ошибкой разработки является создание одной такой «фабрики» на все приложение. При этом «фабрика» превращается в огромную свалку барахла и порождает искушение доставать внутри классов то, что им на самом деле не нужно. У классов пропадает контакт, ограничения.</p>
+<p>Можно представить, что нашему рыцарю подарили сундук с сокровищами, из которого он может достать необходимую ему броню, но в довесок никто не помешает ему набрать ненужных украшений.
+Именно по этой причине этот паттерн пересек черту добра и зла и превратился в антипаттерн. Если у вас есть выбор между DI и SL, всегда выбирайте DI.</p>
+<h2 id="di">DI</h2>
+<p>Вторым способом доставки зависимостей к классам является DI. В настоящее время это наиболее распространенный паттерн. Он настолько популярен, что в мире бэкенда все нормальные фреймворки поддерживают его из коробки. Нам, к сожалению, так не повезло.</p>
+<p>Суть этого паттерна заключается в том, что зависимости внедряются в класс извне, при этом граф зависимостей строится внутри DI контейнера, который является «фабрикой» или набором «фабрик».</p>
+<p>Наши классы при этом выглядят так:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> boots: Boots?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> pants: Pants?
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> armor: Armor?
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Forge</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeArmor</span>() -&gt; Armor {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> armor = Armor()
+</span></span><span style="display:flex;"><span>        armor.boots = makeBoots()
+</span></span><span style="display:flex;"><span>        armor.pants = makePants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> armor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Garrison</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">lazy</span> <span style="color:#66d9ef">var</span> forge: Forge = {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Forge()
+</span></span><span style="display:flex;"><span>    }()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeKnight</span>() -&gt; Knight {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> knight = Knight()
+</span></span><span style="display:flex;"><span>        knight.armor = forge.makeArmor()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> knight
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> garrison = Garrison()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> knight = garrison.makeKnight()
+</span></span></code></pre></div><p>В данном случае классы выглядят чистыми, в них полностью отсутствует порождающая логика. Всю ответственность по сборке на себя взяли две «фабрики»: Garrison и Forge. При желании количество этих «фабрик» можно увеличивать, чтобы не допускать разрастания классов. Хорошей практикой является создание «фабрики», ответственной за создание каких-либо родственных объектов. Например, эта «фабрика» может создать сервисы, контроллеры для конкретной user story.</p>
+<p>При этом наш рыцарь наконец закончил заниматься не подобающими его статусу вещами, за его амуницию отвечает оруженосец, а рыцарь может сосредоточиться на поединках и принцессах.
+На этом можно было бы закончить, но стоит поговорить о некоторых аспектах DI и доступных на данный момент фреймворках.</p>
+<h2 id="типы-di">Типы DI</h2>
+<p>Initializer Injection — внедрение зависимостей через конструктор. Этот подход используется в случае, когда класс не может существовать без своих зависимостей, но даже если это не так, то его можно использовать для более явного определения контракта класса. Если все зависимости объявлены в качестве аргументов конструктора, определить их проще простого. Но не стоит увлекаться, если у класса десяток зависимостей, то лучше не передавать их в конструкторе (а еще лучше разобраться, зачем вашему классу столько зависимостей).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> boots: Boots
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> pants: Pants
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">init</span>(boots: Boots, pants: Pants) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.boots = boots
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.pants = pants
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Forge</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeArmor</span>() -&gt; Armor {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> boots = makeBoots()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> pants = makePants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> armor = Armor(boots: boots, pants: pants)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> armor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Property Injection — внедрение зависимостей через свойства. Этот способ используется, когда у класса имеются необязательные зависимости, без которых он может обойтись, или когда зависимости могут изменяться не только на этапе инициализации объекта.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Armor</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> boots: Boots?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> pants: Pants?
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Forge</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeArmor</span>() -&gt; Armor {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> armor = Armor()
+</span></span><span style="display:flex;"><span>        armor.boots = makeBoots()
+</span></span><span style="display:flex;"><span>        armor.pants = makePants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> armor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Method Injection — внедрение зависимостей через метод. Этот способ очень похож на Property Injection, но с его помощью можно внедрить временную зависимость только на момент выполнения какого-либо действия или более тесно связать внедрение зависимости с логикой класса.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> armor: Armor?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">winTournament</span>(armor: Armor) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.armor = armor
+</span></span><span style="display:flex;"><span>        defeatEnemy()
+</span></span><span style="display:flex;"><span>        seducePrincess()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.armor = <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">defeatEnemy</span>() {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">seducePrincess</span>() {}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Garrison</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">lazy</span> <span style="color:#66d9ef">var</span> forge: Forge = {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Forge()
+</span></span><span style="display:flex;"><span>    }()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeKnight</span>() -&gt; Knight {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> knight = Knight()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> knight
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> garrison = Garrison()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> knight = garrison.makeKnight()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> armor = garrison.forge.makeArmor()
+</span></span><span style="display:flex;"><span>knight.winTournament(armor: armor)
+</span></span></code></pre></div><p>По моим наблюдениям наиболее распространенными типами являются Initializer Injection и Property Injection, реже используется Method Injection. И хотя я описал типичные случаи выбора того или иного типа, надо помнить, что Swift является очень гибким языком, предоставляя больше возможностей для выбора типа. Так, например, даже имея необязательные зависимости, можно реализовать конструктор с опциональными аргументами и nil по умолчанию. В таком случае можно использовать Initializer Injection вместо Property Injection. В любом случае это компромисс, который может улучшить или ухудшить ваш код, и выбор остается за вами.</p>
+<h2 id="dip">DIP</h2>
+<p>Простое использование IoC, как в примерах выше, само по себе приносит неплохие дивиденды, но можно пойти дальше и добиться соблюдения принципа DIP из SOLID. Для этого мы закроем зависимости протоколами, и только «фабрики» будут знать, какая же конкретно кроется реализация за этим протоколом.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> armor: AbstractArmor?
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Forge</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeArmor</span>() -&gt; AbstractArmor {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> armor = Armor()
+</span></span><span style="display:flex;"><span>        armor.boots = makeBoots()
+</span></span><span style="display:flex;"><span>        armor.pants = makePants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> armor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>В этом случае мы можем без проблем подменять реализацию брони на альтернативную.</p>
+<p>SOLID лежит за пределами данной статьи, тем не менее, если вы не знаете, что это такое лучше ознакомиться с этим набором принципов. Можно начать с неплохой <a href="https://habrahabr.ru/post/348286/">вводной статьи</a>, продолжить чтением соответствующих глав в <a href="https://www.ozon.ru/context/detail/id/5800704/">этой книге</a>.</p>
+<h2 id="области-видимости">Области видимости</h2>
+<p>Само по себе управление областью видимости объектов не является частью IoC концепции, это скорее детали ее реализации, но тем не менее это очень мощный механизм, который позволяет отказаться от синглтонов и решить другие проблемы с общими зависимостями. Область видимости определяет, как долго будет жить зависимость, созданная внутри «фабрики», будет ли оно создаваться каждый раз заново или сохраняться после первого создания и просто передаваться по ссылке.</p>
+<p>Так как области видимости не описаны в паттернах, каждый реализует и именует их как считает нужным. Мы рассмотрим два наиболее часто используемых типа.</p>
+<p>Стандартная область видимости — это то поведение, какое мы реализовали во всех примерах выше. «Фабрика» создает объект, отдает его и забывает о его существовании. При повторном вызове фабричного метода будет создан новый объект.</p>
+<p>Область видимости контейнера — это поведение схожее с синглтоном. При первом вызове фабричного метода создается новый объект, затем «фабрика» сохраняет ссылку на него и возвращает как результат работы фабричного метода, при всех остальных вызовах метода новый объект не создается, а возвращается ссылка на первый объект.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Forge</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> armor: AbstractArmor?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeArmor</span>() -&gt; AbstractArmor {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Если броня уже создана ранее вернеем ее</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> armor = <span style="color:#66d9ef">self</span>.armor { <span style="color:#66d9ef">return</span> armor }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> armor = Armor()
+</span></span><span style="display:flex;"><span>        armor.boots = makeBoots()
+</span></span><span style="display:flex;"><span>        armor.pants = makePants()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">self</span>.armor = armor
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> armor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeBoots</span>() -&gt; Boots {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Boots()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makePants</span>() -&gt; Pants {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Pants()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Как вы видите, в примере выше броня создается только один раз, во всех остальных случаях возвращается ранее созданный экземпляр. Аналогично синглтону, мы всегда будем работать с одним и тем же экземпляром класса, при этом без глобальной области видимости.</p>
+<h2 id="плюсы-и-минусы">Плюсы и минусы</h2>
+<p>Как и любые другие принципы в программировании IoC не является серебряной пулей, у него есть свои плюсы:</p>
+<ul>
+<li>Уменьшает связанность классов;</li>
+<li>Проще переиспользовать классы;</li>
+<li>Более компактные классы за счет выноса поражающей логики;</li>
+<li>Инкапсулирует порождающую логику, что делает ее рефакторинг проще;</li>
+<li>Скрывает реализацию;</li>
+<li>Упрощает замену реализации;</li>
+<li>Упрощает тестирование: подменив “фабрики”, можно заменить зависимости моками;</li>
+<li>Позволяет шарить объекты в приложении без использования синглтона.</li>
+</ul>
+<p>И минусы:</p>
+<ul>
+<li>Увеличивает количество классов при сокрытии реализации за абстракцией;</li>
+<li>Увеличивает время погружения в проект;</li>
+<li>Легко может привести к оверинжинирингу.</li>
+</ul>
+<p>Хотя мое мнение что, главный и единственный минус — это оверинжиниринг в результате безудержного желания четко следовать принципу DIP. Часто можно увидеть, как создается пачка классов, закрывается вдвое более пухлой пачкой протоколов, и это добро проксирует вызов одного метода.</p>
+<p>Если вы подумаете, что хорошо бы создать протокол, сначала подумайте зачем. У вас есть взаимозаменяемые классы, которые необходимо спрятать за общим интерфейсом? Вам требуется сокрыть реализацию, а нельзя обойтись просто модификатором доступа? Для тестирования? Может, для мока хватит простого наследования?</p>
+<h2 id="подводя-итог">Подводя итог</h2>
+<p>На мой взгляд, соблюдение принципов IoC является обязательным условием при разработке проекта, который будет поддерживаться, а не просто забыт после релиза. Если мы заглянем за пределы iOS-песочницы, то обнаружим, что в android-разработке использование DI, воплотившегося в виде фреймворка dagger, стало почти стандартом. В мире бэкенда, например, в spring управление зависимостями лежит в основе всей архитектуры фреймворка. Даже php-фреймворки, такие как, например, Laravel призывают использовать DI и предоставляют необходимые инструменты из коробки. В iOS, к сожалению, так и не появилось ни коробочного решения, ни фреймворка, который бы стал стандартом. Да для Objective-C можно считать таковым тайфун, но не для swift.</p>
+<p>К счастью, вам необязательно использовать именитый фреймворк. Одной из целей этой статьи как раз было показать, что IoC — это не фрейворк, и то, что если в проекте нет тайфуна, это не значит, что там нет DI. Для реализации IoC в проекте неважно, выберете вы DI или SL, достаточно обычной «фабрики», которую вполне можно написать самому. Такая «фабрика» является самым простым DI контейнером.</p>
+    </div>
+</article>
+
+        </main>
+        <footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Евгений Елчев. All rights reserved.</p>
+        <p class="geek-footer">while(alive) { <span class="blink">code();</span> }</p>
+    </div>
+</footer>
+
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+</html>

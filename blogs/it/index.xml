@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Swift on Евгений Елчев</title>
-    <link>https://jonfir.ru/tags/swift/</link>
-    <description>Recent content in Swift on Евгений Елчев</description>
+    <title>IT on Евгений Елчев</title>
+    <link>https://jonfir.ru/blogs/it/</link>
+    <description>Recent content in IT on Евгений Елчев</description>
     <generator>Hugo</generator>
     <language>ru-ru</language>
     <lastBuildDate>Tue, 29 Oct 2019 14:41:24 +0700</lastBuildDate>
-    <atom:link href="https://jonfir.ru/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://jonfir.ru/blogs/it/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Функциональный Swift — это просто</title>
       <link>https://jonfir.ru/blogs/it/easy-fp-swift/</link>

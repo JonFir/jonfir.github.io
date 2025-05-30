@@ -2,53 +2,61 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://jonfir.github.io/tags/ios/</loc>
-    <lastmod>2021-01-11T11:30:03+00:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/</loc>
-    <lastmod>2021-01-11T11:30:03+00:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/posts/</loc>
-    <lastmod>2021-01-11T11:30:03+00:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/tags/swift/</loc>
-    <lastmod>2021-01-11T11:30:03+00:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/tags/swiftui/</loc>
-    <lastmod>2021-01-11T11:30:03+00:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/tags/</loc>
-    <lastmod>2021-01-11T11:30:03+00:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/posts/async-await-materials/</loc>
-    <lastmod>2021-01-11T11:30:03+00:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/tags/xcode/</loc>
-    <lastmod>2020-09-27T19:47:51+07:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/posts/ios-materials/</loc>
-    <lastmod>2020-09-27T19:47:51+07:00</lastmod>
-  </url><url>
-    <loc>https://jonfir.github.io/tags/fp/</loc>
+    <loc>https://jonfir.ru/tags/fp/</loc>
     <lastmod>2019-10-29T14:41:24+07:00</lastmod>
   </url><url>
-    <loc>https://jonfir.github.io/posts/easy-fp-swift/</loc>
+    <loc>https://jonfir.ru/tags/ios/</loc>
     <lastmod>2019-10-29T14:41:24+07:00</lastmod>
   </url><url>
-    <loc>https://jonfir.github.io/tags/project/</loc>
+    <loc>https://jonfir.ru/blogs/it/</loc>
+    <lastmod>2019-10-29T14:41:24+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.ru/tags/swift/</loc>
+    <lastmod>2019-10-29T14:41:24+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.ru/tags/</loc>
+    <lastmod>2019-10-29T14:41:24+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.ru/blogs/</loc>
+    <lastmod>2019-10-29T14:41:24+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.ru/</loc>
+    <lastmod>2019-10-29T14:41:24+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.ru/blogs/it/easy-fp-swift/</loc>
+    <lastmod>2019-10-29T14:41:24+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.ru/tags/project/</loc>
     <lastmod>2019-10-28T12:40:40+07:00</lastmod>
   </url><url>
-    <loc>https://jonfir.github.io/posts/ios-project-structure/</loc>
+    <loc>https://jonfir.ru/tags/xcode/</loc>
     <lastmod>2019-10-28T12:40:40+07:00</lastmod>
   </url><url>
-    <loc>https://jonfir.github.io/tags/di/</loc>
+    <loc>https://jonfir.ru/blogs/it/ios-project-structure.md/</loc>
+    <lastmod>2019-10-28T12:40:40+07:00</lastmod>
+  </url><url>
+    <loc>https://jonfir.ru/tags/di/</loc>
     <lastmod>2018-07-24T15:23:11+07:00</lastmod>
   </url><url>
-    <loc>https://jonfir.github.io/posts/ioc-ios/</loc>
+    <loc>https://jonfir.ru/blogs/it/ioc-ios/</loc>
     <lastmod>2018-07-24T15:23:11+07:00</lastmod>
   </url><url>
-    <loc>https://jonfir.github.io/archives/</loc>
+    <loc>https://jonfir.ru/categories/</loc>
   </url><url>
-    <loc>https://jonfir.github.io/categories/</loc>
+    <loc>https://jonfir.ru/blogs/irl/</loc>
+  </url><url>
+    <loc>https://jonfir.ru/wishlist/</loc>
+  </url><url>
+    <loc>https://jonfir.ru/favorites/games/</loc>
+  </url><url>
+    <loc>https://jonfir.ru/favorites/books/</loc>
+  </url><url>
+    <loc>https://jonfir.ru/blogs/managment/</loc>
+  </url><url>
+    <loc>https://jonfir.ru/about/</loc>
+  </url><url>
+    <loc>https://jonfir.ru/favorites/</loc>
+  </url><url>
+    <loc>https://jonfir.ru/favorites/movies/</loc>
   </url>
 </urlset>

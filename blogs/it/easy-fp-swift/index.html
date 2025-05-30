@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>Функциональный Swift — это просто | Евгений Елчев</title>
+    <meta name="description" content="Быстрое и простое погружение в ФП на swift">
+    <meta name="keywords" content="разработка, программирование, блог, технологии, веб-разработка">
+    <meta name="author" content="Евгений Елчев">
+    
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://jonfir.ru/blogs/it/easy-fp-swift/">
+    <meta property="og:title" content="Функциональный Swift — это просто | Евгений Елчев">
+    <meta property="og:description" content="Быстрое и простое погружение в ФП на swift">
+    <meta property="og:image" content="https://jonfir.ru/images/default-og.jpg">
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://jonfir.ru/blogs/it/easy-fp-swift/">
+    <meta name="twitter:title" content="Функциональный Swift — это просто | Евгений Елчев">
+    <meta name="twitter:description" content="Быстрое и простое погружение в ФП на swift">
+    <meta name="twitter:image" content="https://jonfir.ru/images/default-og.jpg">
+    
+    
+    <link rel="canonical" href="https://jonfir.ru/blogs/it/easy-fp-swift/">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+    <div class="site-header">
+        <div class="logo">
+            <a href="https://jonfir.ru/">Евгений Елчев</a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="https://jonfir.ru/">Главная</a></li>
+                <li><a href="/about/">Обо мне</a></li>
+                <li class="dropdown">
+                    <a href="/favorites/">То что я люблю</a>
+                    <ul class="dropdown-content">
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/games/">Игры</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/books/">Книги</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/movies/">Фильмы и Сериалы</a></li>
+                            
+                        
+                    </ul>
+                </li>
+                <li><a href="/wishlist/">Вишлист</a></li>
+                <li class="dropdown">
+                    <a href="/blogs/">Блоги</a>
+                    <ul class="dropdown-content">
+                        
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/it/">IT</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/irl/">IRL</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/managment/">Менеджмент</a></li>
+                            
+                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</header>
+
+        <main>
+            
+<article class="single-page">
+    <div class="page-header">
+        <h1>Функциональный Swift — это просто</h1>
+        
+        <div class="post-meta">
+            <span><i class="far fa-calendar"></i> 29 января 2019</span>
+            <span><i class="far fa-clock"></i> 15 мин</span>
+        </div>
+        
+    </div>
+    <div class="page-content">
+        <p>В статьях о функциональном программировании много пишут о том, как ФП подход улучшает разработку: код становится легко писать, читать, разбивать на потоки и тестировать, построить плохую архитектуру невозможно~~, а волосы становятся мягкими и шелковистыми~~.</p>
+<p>Недостаток один — высокий порог входа. Пытаясь разобраться в ФП, я столкнулся с огромным количеством теории, функторами, монадами, теорией категорий и алгебраическими типами данных. А как применять ФП на практике, было неясно. Кроме того, примеры приводились на незнакомых мне языках — хаскеле и скале.</p>
+<p>Тогда я решил разобраться в ФП самого начала. Разобрался и <a href="https://2019.codefest.ru/lecture/1413">рассказал на codefest</a> о том, что ФП — это на самом деле просто, что мы уже им пользуемся в Swift и можем пользоваться еще эффективнее.</p>
+<h2 id="функциональное-программирование-чистые-функции-и-отсутствие-состояний">Функциональное программирование: чистые функции и отсутствие состояний</h2>
+<p>Определить, что означает писать в той или иной парадигме — нелегкая задача. Парадигмы формируются десятилетиями людьми с разным видением, воплощаются в языках с непохожими подходами, обрастают инструментами. Эти инструменты и подходы считаются неотъемлемой частью парадигм, но на самом деле ими не являются.</p>
+<p>Например, считается, что объектно-ориентированное программирование стоит на трех китах — наследование, инкапсуляция и полиморфизм. Но инкапсуляция и полиморфизм реализуется на функциях с той же легкостью, что и на объектах. Или замыкания — они родились в чистых функциональных языках, но так давно перекочевали в промышленные языки, что перестали ассоциироваться с ФП. Монады тоже пробираются в промышленные языки, но пока не утратили принадлежность к условному хаскелю в умах людей.</p>
+<p>В итоге получается, что невозможно четко определить, что конкретно представляет из себя та или иная парадигма. Я в очередной раз столкнулся с этим на codefest 2019, где все эксперты ФП, говоря о функциональной парадигме, называли разные вещи.</p>
+<p>Лично мне понравилось определение из вики:</p>
+<p>«Функциона́льное программи́рование — раздел дискретной математики и парадигма программирования, в которой процесс вычисления трактуется как вычисление значений функций в математическом понимании последних (в отличие от функций как подпрограмм в процедурном программировании)».</p>
+<p>Что такое математическая функция? Это функция, результат которой зависит только от данных, к которым она применена.</p>
+<p>Пример математической функции в четыре строки кода выглядит так:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summ</span>(a: Int, b: Int) -&gt; Int {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> x = summ(a: <span style="color:#ae81ff">2</span>, b: <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><p>Вызывая функцию summ с входными аргументами 2 и 3, получим 5. Этот результат неизменен. Поменяйте программу, поток, место исполнения — результат останется прежним.</p>
+<p>А нематематическая функция — это когда где-то объявлена глобальная переменная.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> z = <span style="color:#ae81ff">5</span>
+</span></span></code></pre></div><p>Функция суммирования теперь складывает входные аргументы и значение z.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summ</span>(a: Int, b: Int) -&gt; Int {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b <span style="color:#f92672">+</span> z
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> x = summ(a: <span style="color:#ae81ff">2</span>, b: <span style="color:#ae81ff">3</span>)
+</span></span></code></pre></div><p>Добавилась зависимость от глобального состояния. Теперь нельзя однозначно предсказать значение x. Оно будет постоянно меняться в зависимости от того, когда была вызвана функция. Вызовем функцию 10 раз подряд, и каждый раз можем получить разный результат.</p>
+<p>Еще один вариант нематематической функции:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summ</span>(a: Int, b: Int) -&gt; Int {
+</span></span><span style="display:flex;"><span>    z = b <span style="color:#f92672">-</span> a
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Помимо возврата суммы входных аргументов, функция меняет глобальную переменную z. Эта функция имеет сайд-эффект.</p>
+<p>В функциональном программировании есть специальный термин для математических функций — чистые функции. Чистая функция — это такая функция, которая для одного и того же набора входных значений возвращает одинаковый результат и не обладает побочными эффектами.</p>
+<p>Чистые функции — краеугольный камень ФП, все остальное уже вторично. Предполагается, что, следуя этой парадигме, используем только их. А если никак не работать с глобальными или изменяемыми состояниями, то их и не будет в приложении.</p>
+<h2 id="классы-и-структуры-в-функциональной-парадигме">Классы и структуры в функциональной парадигме</h2>
+<p>Изначально, я думал, что ФП — это только про функции, а классы и структуры используются только в ООП. Но оказалось, классы тоже вписываются в концепцию ФП. Только и они должны быть, скажем так, «чистыми».</p>
+<p>«Чистый» класс — класс, все методы которого являются чистыми функциями, а свойства неизменяемы. (Это неофициальный термин, придуман во время подготовки к докладу).</p>
+<p>Взглянем на такой класс:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> name: String
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> surname: String
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> email: String
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getFullname</span>() -&gt; String {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> surname
+</span></span><span style="display:flex;"><span>    }   
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Его можно рассматривать как инкапсуляцию данных&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> name: String
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> surname: String
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> email: String   
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>и функций по работе с ними.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getFullname</span>() -&gt; String {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> surname
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>С точки зрения ФП, использование класса User ничем не отличается от работы с примитивами и функциями.</p>
+<p>Объявим значение — пользователя Ваню.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> ivan = User(
+</span></span><span style="display:flex;"><span>    name: <span style="color:#e6db74">&#34;Иван&#34;</span>,
+</span></span><span style="display:flex;"><span>    surname: <span style="color:#e6db74">&#34;Иванов&#34;</span>,
+</span></span><span style="display:flex;"><span>    email: <span style="color:#e6db74">&#34;ivanov@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Применим к нему функцию getFullname.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> fullName = ivan.getFullname()
+</span></span></code></pre></div><p>В результате получим новое значение — полное имя пользователя. Так как изменить параметры свойства ivan нельзя, результат вызова getFullname неизменен.</p>
+<p>Конечно внимательный читатель может сказать: «Постой-ка, метод getFullname возвращает результат на основе глобальных для него значений — свойств класса, а не аргументов». Но на самом деле метод — это просто функция, в которую в качестве аргумента передается объект.</p>
+<p>Swift даже поддерживает эту запись в явном виде:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> fullName = User.getFullname(ivan)()
+</span></span></code></pre></div><p>Если же нам понадобиться изменить какое-то значение у объекта, например email, то придется создавать новый объект. Это можно делать соответствующим методом.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> name: String
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> surname: String
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> email: String
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">change</span>(email: String) -&gt; User {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> User(name: name, surname: surname, email: email)
+</span></span><span style="display:flex;"><span>    }    
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> newIvan = ivan.change(email: <span style="color:#e6db74">&#34;god@example.com&#34;</span>)
+</span></span></code></pre></div><h2 id="функциональные-атрибуты-в-swift">Функциональные атрибуты в Swift</h2>
+<p>Я уже писал о том, что многие инструменты, реализации и подходы, считающиеся частью той или иной парадигмы, на самом деле могут применяться и в других парадигмах. Например, частью ФП считаются монады, алгебраические типы данных, автоматический вывод типов, строгая типизация, зависимые типы, проверка корректности программы во время компиляции. Но многие из этих инструментов мы можем найти и в Swift.</p>
+<p>Строгая типизация и вывод типов — часть Swift. Их не нужно понимать или вводить в проект, они просто у нас есть.</p>
+<p>Зависимых типов нет, хотя я бы не отказался от проверки компилятором строки, что она email, массива, что он не пустой, словаря, что он содержит ключ «apple». Кстати, в Haskell зависимых типов тоже нет.</p>
+<p>Алгебраические типы данных имеются, и это крутая, но сложная для понимания математическая штука. Прелесть в том, что ее не надо понимать математически, чтобы использовать. Например Int, enum, Optional, Hashable — это алгебраические типы. И если Int есть во многих языках, а Protocol есть и в Objective-C, то enum со связанными значениями, протоколы с дефолтной реализацией и ассоциативными типами есть далеко не везде.</p>
+<p>Проверку корректности во время компиляции часто упоминают, говоря о таких языках, как rust или haskell. Подразумевается, что язык настолько выразителен, что позволяет описать все краевые случаи так, чтобы их проверил компилятор. А значит, если программа скомпилировалась, то она обязательно будет работать. Никто не спорит, что она может содержать ошибки в логике, потому что вы неправильно отфильтровали данные для показа пользователю. Но она не будет падать, потому что вы не получили данные из БД, сервер вернул вам не тот ответ, на который вы рассчитывали, или пользователь ввел дату своего рождения строкой, а не числом.</p>
+<p>Не могу сказать, что компиляция swift кода может отловить все баги: например, утечку памяти допустить легко. Но строгая типизация и Optional хорошо защищают от множества глупых ошибок. Главное — ограничить принудительное извлечение.</p>
+<h2 id="монады-не-часть-парадигмы-фп-а-инструмент-необязательный">Монады: не часть парадигмы ФП, а инструмент (необязательный)</h2>
+<p>Довольно часто ФП и монады используются в одном и том же приложении. Одно время я даже думал, что монады и есть функциональное программирование. Когда же я их понял (но это не точно), то сделал несколько выводов:</p>
+<ul>
+<li>они несложные;</li>
+<li>они удобные;</li>
+<li>понимать их необязательно, достаточно уметь применять;</li>
+<li>без них легко можно обойтись.</li>
+</ul>
+<p>В Swift уже есть две стандартные монады — Optional и Result. Обе нужны для борьбы с сайд-эффектами. Optional защищает от возможного nil. Result — от различных исключительных ситуаций.</p>
+<p>Рассмотрим на примере, доведенном до абсурда. Пусть у нас есть функции, возвращающие целое число из базы данных и от сервера. Вторая может вернуть nil, но мы используем неявное извлечение получая поведение времен Objective-C.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromDB</span>() -&gt; Int
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromServer</span>() -&gt; Int!
+</span></span></code></pre></div><p>Продолжаем игнорировать Optional и реализуем функцию для суммирования этих чисел.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summInts</span>() -&gt; Int! {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromDB = getIntFromDB()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromServer = getIntFromServer()<span style="color:#f92672">!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> summ = intFromDB <span style="color:#f92672">+</span> intFromServer
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> summ
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Вызываем итоговую функцию и используем результат.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> result = summInts()
+</span></span><span style="display:flex;"><span>print(result)
+</span></span></code></pre></div><p>Сработает ли этот пример? Ну, он определенно скомпилируется, а вот получим мы креш во время выполнения или нет — никому неизвестно. Этот код хорош, он отлично показывает наши намерения (нам необходима сумма каких-то двух чисел) и при этом не содержит ничего лишнего. Но он опасен. Поэтому так пишут только джуниоры и уверенные в себе люди.</p>
+<p>Изменим пример, сделав его безопасным.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromDB</span>() -&gt; Int
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromServer</span>() -&gt; Int?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summInts</span>() -&gt; Int? {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromDB = getIntFromDB()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromServer = getIntFromServer()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> intFromServer = intFromServer {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> summ = intFromDB <span style="color:#f92672">+</span> intFromServer
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> summ
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> result = summInts() {
+</span></span><span style="display:flex;"><span>    print(result)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Этот код хорош, он безопасен. Используя явное извлечение, мы защитились от возможного nil. Но он стал громоздким, и среди безопасных проверок уже сложно разглядеть наше намерение. Нам все еще необходима сумма каких-то двух чисел, а не проверки безопасности.</p>
+<p>На этот случай у Optional есть метод map, доставшийся ему от типа Maybe из Haskell. Применим его, и пример изменится.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromDB</span>() -&gt; Int
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromServer</span>() -&gt; Int?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summInts</span>() -&gt; Int? {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromDB = getIntFromDB()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromServer = getIntFromServer()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> intFromServer.map { x <span style="color:#66d9ef">in</span> x <span style="color:#f92672">+</span> intFromDB }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> result = summInts() {
+</span></span><span style="display:flex;"><span>    print(result)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Или еще компактнее.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromDB</span>() -&gt; Int
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getintFromServer</span>() -&gt; Int?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summInts</span>() -&gt; Int? {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> getintFromServer().map { $0 <span style="color:#f92672">+</span> getIntFromDB() }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> result = summInts() {
+</span></span><span style="display:flex;"><span>    print(result)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Мы использовали map, чтобы преобразовать intFromServer в необходимый нам результат без извлечения.</p>
+<p>Мы избавились от проверки внутри summInts, но оставили ее на верхнем уровне. Это сделано намеренно, так как в конце цепочки вычислений мы должны выбрать способ обработки отсутствия результата.</p>
+<p>Извлечь</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> result = summInts() {
+</span></span><span style="display:flex;"><span>    print(result)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Использовать значение по умолчанию</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>print(result ?? <span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><p>Или вывести предупреждение если, данные не получены.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> result = summInts() {
+</span></span><span style="display:flex;"><span>    print(result)
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Ошибка&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Теперь код в примере не содержит лишнего, как в первом примере, и безопасен, как во втором.</p>
+<p>Но map не всегда работает так, как нужно</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> a: String? = <span style="color:#e6db74">&#34;7&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> b = a.map { Int($0) }
+</span></span><span style="display:flex;"><span>type(of: b)<span style="color:#75715e">//Optional&lt;Optional&lt;Int&gt;&gt;</span>
+</span></span></code></pre></div><p>Если в map передать функцию, результат которой опционален, мы получим двойной Optional. Но нам не нужна двойная защита от nil. Достаточно одной. Решить проблему позволяет метод flatMap, это аналог map с одним отличием, он разворачивает матрешки.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> a: String? = <span style="color:#e6db74">&#34;7&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> b = a.flatMap { Int($0) }
+</span></span><span style="display:flex;"><span>type(of: b)<span style="color:#75715e">//Optional&lt;Int&gt;.</span>
+</span></span></code></pre></div><p>Еще один пример, где map и flatMap не очень удобно использовать.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> a: Int? = <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> b: Int? = <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> c = a.map { $0 <span style="color:#f92672">+</span> b! }
+</span></span></code></pre></div><p>Что, если функция принимает два аргумента и они оба опциональные? Конечно, у ФП есть решение — это аппликативный функтор и каррирование. Но эти инструменты довольно неуклюже смотрятся без использования специальных операторов, которых нет в нашем языке, а писать кастомные операторы считается дурным тоном. Поэтому рассмотрим более интуитивный способ: напишем специальную функцию.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>@discardableResult
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">perform</span>&lt;Result, U, Z&gt;(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">_</span> transform: (U, Z) <span style="color:#66d9ef">throws</span> -&gt; Result,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">_</span> optional1: U?,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">_</span> optional2: Z?) <span style="color:#66d9ef">rethrows</span> -&gt; Result? {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">guard</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> optional1 = optional1,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> optional2 = optional2
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">try</span> transform(optional1, optional2)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Она принимает в качестве аргументов два опциональных значения и функцию с двумя аргументами. Если оба опционала имеют значения, к ним применяется функция.
+Теперь мы можем работать с несколькими опционалами, не разворачивая их.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> a: Int? = <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> b: Int? = <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> result = perform(<span style="color:#f92672">+</span>, a, b)
+</span></span></code></pre></div><p>У второй монады, Result, тоже имеются методы map и flatMap. А значит, с ней можно работать точно так же.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromDB</span>() -&gt; Int
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getIntFromServer</span>() -&gt; Result&lt;Int, ServerError&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">summInts</span>() -&gt; Result&lt;Int, ServerError&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromDB = getIntFromDB()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> intFromServer = getIntFromServer()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> intFromServer.map { x <span style="color:#66d9ef">in</span> x <span style="color:#f92672">+</span> intFromDB }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">case</span> .success(<span style="color:#66d9ef">let</span> result) = summInts() {
+</span></span><span style="display:flex;"><span>    print(result)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Собственно, это и роднит монады между собой — возможность работать со значением внутри контейнера, не извлекая его. На мой взгляд, это делает код лаконичнее. Но если вам не нравится, просто используйте явные извлечения, это не противоречит парадигме ФП.</p>
+<h2 id="пример-сокращаем-число-грязных-функций">Пример: сокращаем число «грязных» функций</h2>
+<p>К сожалению, в реальных программах повсюду встречаются глобальные состояния и сайд-эффекты — сетевые запросы, источники данных, UI. И только чистыми функциями обойтись нельзя. Но это не значит, что ФП для нас полностью недоступно: мы можем постараться уменьшить число грязных функций, которых обычно очень много.</p>
+<p>Рассмотрим небольшой пример, приближенный к продакшн-разработке. Построим UI, конкретно форму входа. Форма имеет некоторые ограничения:</p>
+<ol>
+<li>Логин не короче 3 символов</li>
+<li>Пароль не короче 6 символов</li>
+<li>Кнопка «Войти» активна, если оба поля валидны</li>
+<li>Цвет рамки поля отражает его состояние, черная — валидно, красная — не валидно</li>
+</ol>
+<p>Код, описывающий эти ограничения, может выглядеть так:</p>
+<p>Обработка любого пользовательского ввода</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">textFieldTextDidChange</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1. Зависимость от глобального стейта</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2. Явное извлечение</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">guard</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> login = loginView.text,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> password = passwordView.text <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 3. Сайд-эффект            </span>
+</span></span><span style="display:flex;"><span>        loginButton.isEnabled = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> loginIsValid = login.count <span style="color:#f92672">&gt;</span> constants.loginMinLenght
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> loginIsValid {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 4. Сайд-эффект</span>
+</span></span><span style="display:flex;"><span>        loginView.layer.borderColor = constants.normalColor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> passwordIsValid = password.count <span style="color:#f92672">&gt;</span> constants.passwordMinLenght
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> passwordIsValid {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 5. Сайд-эффект</span>
+</span></span><span style="display:flex;"><span>        passwordView.layer.borderColor = constants.normalColor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 6. Сайд-эффект</span>
+</span></span><span style="display:flex;"><span>    loginButton.isEnabled = loginIsValid <span style="color:#f92672">&amp;&amp;</span> passwordIsValid
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Обработка завершения ввода логина:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">loginDidEndEdit</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> color: CGColor
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1. Зависмость от глобального стейта</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2. Явное извлечение</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> login = loginView.text, login.count <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">3</span> {
+</span></span><span style="display:flex;"><span>        color = constants.normalColor
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        color = constants.errorColor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 3. Сайд эфект</span>
+</span></span><span style="display:flex;"><span>    loginView.layer.borderColor = color
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Обработка завершения ввода пароля:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">passwordDidEndEdit</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> color: CGColor
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1. Зависимость от глобального стейта</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2. Явное извлечение</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> password = passwordView.text, password.count <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">6</span> {
+</span></span><span style="display:flex;"><span>        color = constants.normalColor
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        color = constants.errorColor
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 3. Сайд-эффект</span>
+</span></span><span style="display:flex;"><span>    passwordView.layer.borderColor = color
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Нажатие на кнопку войти:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">loginPressed</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1. Зависимость от глобального стейта</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2. Явное извлечение</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">guard</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> login = loginView.text,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> password = passwordView.text <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    auth(login: login, password: password) { [<span style="color:#66d9ef">weak</span> <span style="color:#66d9ef">self</span>] user, error <span style="color:#66d9ef">in</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> user = user {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* успех */</span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> error <span style="color:#66d9ef">is</span> AuthError {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">guard</span> <span style="color:#66d9ef">let</span> `<span style="color:#66d9ef">self</span>` = <span style="color:#66d9ef">self</span> <span style="color:#66d9ef">else</span> { <span style="color:#66d9ef">return</span> }
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 3. Сайд-эффект</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">self</span>.passwordView.layer.borderColor = <span style="color:#66d9ef">self</span>.constants.errorColor
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 4. Сайд-эффект</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">self</span>.loginView.layer.borderColor = <span style="color:#66d9ef">self</span>.constants.errorColor
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* Другие ошибки */</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Возможно, этот код не самый лучший, но в целом он неплох и работает. Правда, у него есть ряд проблем:</p>
+<ul>
+<li>4 явных извлечения;</li>
+<li>4 зависимости от глобального стейта;</li>
+<li>8 сайд-эффектов;</li>
+<li>неочевидные конечные состояния;</li>
+<li>нелинейный флоу.</li>
+</ul>
+<p>Главная проблема состоит в том, что нельзя просто взять и сказать, что происходит с нашим экраном. Глядя на один метод, мы видим, что он делает с глобальным стейтом, но не знаем, кто, где и когда еще трогает стейт. В итоге, чтобы разобраться в происходящем, надо найти все точки работы с вьюшками и понять, в каком порядке какие воздействия происходят. Удержать все это в голове очень сложно.</p>
+<p>Если процесс изменения состояния линейный, можно изучать его шаг за шагом, что снизит когнитивную нагрузку на программиста.</p>
+<p>Попробуем изменить пример, сделав его более функциональным.</p>
+<p>Для начала определим модель, описывающую текущее состояние экрана. Это позволит точно знать, какая информация необходима для работы.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">LoginOutputModel</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> login: String
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> password: String
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> loginIsValid: Bool {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> login.count <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> passwordIsValid: Bool {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> password.count <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> isValid: Bool {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> loginIsValid <span style="color:#f92672">&amp;&amp;</span> passwordIsValid
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Модель, описывающую изменения, применяемые к экрану. Она нужна, чтобы точно знать, что мы будем менять.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">LoginInputModel</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> loginBorderColor: CGColor?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> passwordBorderColor: CGColor?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> loginButtonEnable: Bool?
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> popupErrorMessage: String?
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>События, которые могут привести к новому состоянию экрана. Так мы точно будем знать, какие действия изменяют экран.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Event</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> textFieldTextDidChange
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> loginDidEndEdit
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> passwordDidEndEdit
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> loginPressed
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> authFailure(Error)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Теперь опишем главный метод изменения. Эта чистая функция на основе события текущего состояния собирает новое состояние экрана.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeInputModel</span>(
+</span></span><span style="display:flex;"><span>    event: Event,
+</span></span><span style="display:flex;"><span>    outputModel: LoginOutputModel?) -&gt; LoginInputModel {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> event {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> .textFieldTextDidChange:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> mapValidToColor: (Bool) -&gt; CGColor? = { $0 ? normalColor : <span style="color:#66d9ef">nil</span> }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> LoginInputModel(
+</span></span><span style="display:flex;"><span>            loginBorderColor: outputModel
+</span></span><span style="display:flex;"><span>                .map { $0.loginIsValid }
+</span></span><span style="display:flex;"><span>                .flatMap(mapValidToColor),
+</span></span><span style="display:flex;"><span>            passwordBorderColor: outputModel
+</span></span><span style="display:flex;"><span>                .map { $0.passwordIsValid }
+</span></span><span style="display:flex;"><span>                .flatMap(mapValidToColor),
+</span></span><span style="display:flex;"><span>            loginButtonEnable: outputModel?.passwordIsValid
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> .loginDidEndEdit:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> LoginInputModel(<span style="color:#75715e">/**/</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> .passwordDidEndEdit:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> LoginInputModel(<span style="color:#75715e">/**/</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> .loginPressed:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> LoginInputModel(<span style="color:#75715e">/**/</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> .authFailure(<span style="color:#66d9ef">let</span> error) <span style="color:#66d9ef">where</span> error <span style="color:#66d9ef">is</span> AuthError:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> LoginInputModel(<span style="color:#75715e">/**/</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> .authFailure:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> LoginInputModel(<span style="color:#75715e">/**/</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Самое важное в том, что этот метод единственный, кому позволено заниматься конструированием нового состояния — и он чистый. Его можно изучить шаг за шагом. Увидеть, как события преобразуют экран из точки А в точку Б. Если что-то сломается, то проблема точно здесь. И это легко тестировать.</p>
+<p>Добавим вспомогательное свойство для получения текущего состояния, это единственный метод, зависящий от глобального состояния.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> outputModel: LoginOutputModel? {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> perform(LoginOutputModel.<span style="color:#66d9ef">init</span>, loginView.text, passwordView.text)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Добавим еще один «грязный» метод для создания сайд-эффектов изменения экрана.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">updateView</span>(<span style="color:#66d9ef">_</span> event: Event) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> inputModel = makeInputModel(event: event, outputModel: outputModel)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> color = inputModel.loginBorderColor {
+</span></span><span style="display:flex;"><span>        loginView.layer.borderColor = color
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> color = inputModel.passwordBorderColor {
+</span></span><span style="display:flex;"><span>        passwordView.layer.borderColor = color
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> isEnable = inputModel.loginButtonEnable {
+</span></span><span style="display:flex;"><span>            loginButton.isEnabled = isEnable
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> error = inputModel.popupErrorMessage {
+</span></span><span style="display:flex;"><span>            showPopup(error)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Хотя метод updateView и не является чистым, но это единственное место, где меняются свойства экрана. Первый и последний пункт в цепочке вычислений. И если что-то пошло не так, именно тут будет стоять брейкпоинт.</p>
+<p>Осталось только запустить преобразования в нужных местах.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">textFieldTextDidChange</span>() {
+</span></span><span style="display:flex;"><span>    updateView(.textFieldTextDidChange)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">loginDidEndEdit</span>() {
+</span></span><span style="display:flex;"><span>    updateView(.loginDidEndEdit)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">passwordDidEndEdit</span>() {
+</span></span><span style="display:flex;"><span>    updateView(.passwordDidEndEdit)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Метод loginPressed вышел немного уникальным.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#66d9ef">@IBAction</span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">loginPressed</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    updateView(.loginPressed)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> completion: (Result&lt;User, Error&gt;) -&gt; Void = { [<span style="color:#66d9ef">weak</span> <span style="color:#66d9ef">self</span>] result <span style="color:#66d9ef">in</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> result {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> .success(<span style="color:#66d9ef">let</span> user):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* успех */</span>                 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> .failure(<span style="color:#66d9ef">let</span> error):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">self</span>?.updateView(.authFailure(error))
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    outputModel.map {
+</span></span><span style="display:flex;"><span>        auth(login: $0.login, password: $0.password, completion: completion)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Дело в том, что нажатие на кнопку «Войти» запускает две цепочки вычислений, что не запрещается.</p>
+<h2 id="заключение">Заключение</h2>
+<p>До начала изучения ФП я делал сильный акцент на парадигмах программирования. Для меня было важно, чтобы код следовал ООП, я не любил статические функции или объекты без состояний, не писал глобальных функций.</p>
+<p>Сейчас мне кажется, что все те вещи, что я считал частью той или иной парадигмы — довольно условны. Главное — это чистый, понятный код. Для достижения этой цели можно использовать все, что возможно: чистые функции, классы, монады, наследование, композиция, вывод типов. Все они хорошо уживаются вместе и делают код лучше — достаточно применять их к месту.</p>
+
+    </div>
+</article>
+
+        </main>
+        <footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Евгений Елчев. All rights reserved.</p>
+        <p class="geek-footer">while(alive) { <span class="blink">code();</span> }</p>
+    </div>
+</footer>
+
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+</html>

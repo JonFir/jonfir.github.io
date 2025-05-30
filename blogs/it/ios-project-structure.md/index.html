@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>Структура iOS проекта | Евгений Елчев</title>
+    <meta name="description" content="Best practices по структуре папок в проекте">
+    <meta name="keywords" content="разработка, программирование, блог, технологии, веб-разработка">
+    <meta name="author" content="Евгений Елчев">
+    
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://jonfir.ru/blogs/it/ios-project-structure.md/">
+    <meta property="og:title" content="Структура iOS проекта | Евгений Елчев">
+    <meta property="og:description" content="Best practices по структуре папок в проекте">
+    <meta property="og:image" content="https://jonfir.ru/images/default-og.jpg">
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://jonfir.ru/blogs/it/ios-project-structure.md/">
+    <meta name="twitter:title" content="Структура iOS проекта | Евгений Елчев">
+    <meta name="twitter:description" content="Best practices по структуре папок в проекте">
+    <meta name="twitter:image" content="https://jonfir.ru/images/default-og.jpg">
+    
+    
+    <link rel="canonical" href="https://jonfir.ru/blogs/it/ios-project-structure.md/">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+    <div class="site-header">
+        <div class="logo">
+            <a href="https://jonfir.ru/">Евгений Елчев</a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="https://jonfir.ru/">Главная</a></li>
+                <li><a href="/about/">Обо мне</a></li>
+                <li class="dropdown">
+                    <a href="/favorites/">То что я люблю</a>
+                    <ul class="dropdown-content">
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/games/">Игры</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/books/">Книги</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/favorites/movies/">Фильмы и Сериалы</a></li>
+                            
+                        
+                    </ul>
+                </li>
+                <li><a href="/wishlist/">Вишлист</a></li>
+                <li class="dropdown">
+                    <a href="/blogs/">Блоги</a>
+                    <ul class="dropdown-content">
+                        
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/it/">IT</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/irl/">IRL</a></li>
+                            
+                        
+                            
+                                <li><a href="https://jonfir.ru/blogs/managment/">Менеджмент</a></li>
+                            
+                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</header>
+
+        <main>
+            
+<article class="single-page">
+    <div class="page-header">
+        <h1>Структура iOS проекта</h1>
+        
+        <div class="post-meta">
+            <span><i class="far fa-calendar"></i> 28 января 2019</span>
+            <span><i class="far fa-clock"></i> 5 мин</span>
+        </div>
+        
+    </div>
+    <div class="page-content">
+        <p>Привет. В этой статье поговорим о структуре папок в проекте. Это не популярная тема для статей, но правильная структура папок влияет на удобство навигации.</p>
+<p>Часто проект делится на три части. Первая часть, UI, содержит элементы интерфейса, UIViewController’ы, презентеры, вьюмодели, интеракторы и иже с ними. Вторая часть бизнес логика. Которая заканчивается на взаимодействие с сетью и рилмом. Третья часть это DTO, с парсерами. Причина кроется в специфике iOS приложений, ведь это тонкие клиенты.</p>
+<p>В итоге и структура папок в проектах получается следующей:</p>
+<ul>
+<li><strong>UI</strong></li>
+<li><strong>Services</strong></li>
+<li><strong>DTO</strong></li>
+</ul>
+<p><strong>UI</strong> часть содержит сотни элементов и выходит громоздкой, возможно детализируется по папкам на основе сценариев. Возможно проект содержит еще две папки <strong>Resource</strong> и <strong>Common</strong>. В <strong>Resource</strong> размещены <strong>Launch.storybaord</strong>, <strong>Info.plist</strong> и <strong>Assets.xcassets</strong>. <strong>Common</strong> — порочная папка, хранит то что не попало в остальные категории. Расширения, протоколы, элементы интерфейса что используются в нескольких сценариях, хелперы для показа всплывающих окон и другие элементы. Такая структура неплохая. Проблема, в недостаточной детализации внутри корневых директорий.</p>
+<p>После некоторых раздумий, перемещений и дополнений у меня получилось следующее.</p>
+<h2 id="верхний-уровень">Верхний уровень</h2>
+<ul>
+<li><strong>Application</strong>
+<ul>
+<li><strong>Domain</strong></li>
+<li><strong>UI</strong></li>
+</ul>
+</li>
+<li><strong>Library</strong></li>
+<li><strong>Configuration</strong></li>
+<li><strong>Resources</strong></li>
+</ul>
+<p>Верхний уровень содержит четыре принципиально разные директории. <strong>Resource</strong>, <strong>Configuration</strong> относятся к проекту, <strong>Application</strong> непосредственно наше приложение. <strong>Library</strong> выделяет часть того, что многие называют <strong>Common</strong>. В ней хранятся библиотечные функции.</p>
+<h2 id="library">Library</h2>
+<ul>
+<li><strong>Library</strong>
+<ul>
+<li><strong>Standart</strong>
+<ul>
+<li><strong>Collection</strong>
+<ul>
+<li><strong>IsNotEmpty</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>String</strong></li>
+</ul>
+</li>
+<li><strong>UIKit</strong>
+<ul>
+<li><strong>UIButton</strong></li>
+<li><strong>UIViewController</strong></li>
+</ul>
+</li>
+<li><strong>Foundation</strong></li>
+</ul>
+<p>Если вы хотите добавить в проект очередное расширение, которое не вписывается не в одну область вашего приложения, например метод <code>isNotEmpty</code> для коллекций или некий <code>KeyboardHandler</code>, то это должно быть размещено здесь. Если кратко, тот функционал который легко может быть расшарен между любым приложением должен храниться в библиотеке. Разумеется ее можно и нужно детализировать. Если вы расширяете элемент, имеющий иерархию, то следует повторить ее в директории. Яркий пример расширение для коллекций. Коллекция это часть стандартного языка, что отражено в нашей файловой структуре.</p>
+<h2 id="application">Application</h2>
+<p><strong>Application</strong> хранит, все что напрямую относится к коду нашего приложения. Здесь хранятся контроллеры конкретных экранов. Конкретные UI компоненты, конкретные запросы к бекенду. В основе ее лежит разделение на две больших предметных области <strong>UI</strong> и <strong>Domain</strong>.</p>
+<h2 id="ui">UI</h2>
+<ul>
+<li><strong>Animations</strong></li>
+<li><strong>Appearance</strong>
+<ul>
+<li><strong>NevigationBarAppearance</strong></li>
+</ul>
+</li>
+<li><strong>Elements</strong>
+<ul>
+<li><strong>Basic</strong>
+<ul>
+<li><strong>ImageView</strong>
+<ul>
+<li><strong>RoundedImageView</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Complex</strong></li>
+</ul>
+</li>
+<li><strong>Modules</strong>
+<ul>
+<li><strong>Auth</strong></li>
+<li><strong>News</strong>
+<ul>
+<li><strong>NewsList</strong>
+<ul>
+<li><strong>NewsListViewController</strong></li>
+<li><strong>NewsListView</strong></li>
+<li><strong>NewsListViewModel</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Users</strong></li>
+</ul>
+</li>
+</ul>
+<p>UI это все то что видит пользователь и вспомогательный функционал. В ее основе находится <strong>Modules</strong>, что бы избежать разночтения, скажу, что под <strong>Module</strong> я имею в виду не обязательно <strong>UIViewController</strong> или экран приложения. Это самостоятельный кусок UI со своей логикой. Это может быть один <strong>UIViewController</strong>, <strong>VIPER</strong> модуль, связка <strong>UIViewController</strong> и <strong>ViewModel</strong>. Директория модуля это минимальная единица, которая группируется в user story.</p>
+<p>Если вы используете <strong>Xib</strong> или один <strong>Storyboard</strong> на один контроллер они должны храниться в директории модуля. <strong>Storybaord</strong> в котором находятся все контроллеры сценария должен храниться в директории сценария. Если для навигации вы используете один <strong>Router</strong> на один модуль, то храните его в директории модуля. <strong>Router</strong> отвечающий за сценарий или <strong>Coordinator</strong> должны храниться в директории сценария.</p>
+<p>Есть альтернативная точка зрения, в сценарии создаются папки <strong>Controllers</strong>, <strong>Routers</strong>, <strong>ViewModel</strong> и так далее. Группировка идет не по модулям, а по компонентам модуля. Приверженцы этого подхода, утверждают, что не надо смешивать разные сущности. Но мои наблюдения говорят об обратном. Как правило, человеку работающему над компонентом модуля комфортнее видеть в открытой папке другие компоненты данного модуля. При работе над <strong>NewsView</strong> он с большей вероятностью захочет открыть <strong>NewsController</strong>, а не <strong>UserListView</strong>.</p>
+<p>В директории <strong>Modules</strong> не хранятся <strong>UI</strong> элементы. Даже если вы создали класс кнопки который используется только в данном модуле. Даже если вы сгруппировали какой-то блок в отдельную UIView и она используется только в данном модуле. Для них есть отдельная директория — <strong>Elements</strong>. Почему я так категоричен? Я часто видел проекты где следуют правилу:</p>
+<blockquote>
+<p>Если элемент используется, только в данном модуле то разместим его рядом с ним. Если компонент используется только в данном сценарии, то разместим его в директории сценария. Если компонент используется в нескольких сценариях, то разместим в директории <em>Common</em>.</p></blockquote>
+<p>Но мне оно не нравится. Во-первых, то что сегодня используется только в одном модуле, завтра может начать использоваться в другом и нам постоянно надо будет поддерживать структуру в актуальном состоянии. Об этом частенько забывают, в итоге директория элемента перестает служить источником истины. В предложенной же мной структуре, вы точно будете уверены, что UI элементы находится в директории <strong>Elements</strong>.</p>
+<p>Если это базовый атомарный элемент, то он находится в директории <strong>Basic</strong>. Эту директорию просто детализировать на <strong>Label</strong>, <strong>Image</strong>, <strong>Button</strong> и так далее. Сложные компоненты, состоящие из нескольких простых хранятся в <strong>Complex</strong>. Эта директория конкретизируется крайне плохо. Я пробовал систематизировать ее по предметной области, составу компонентов, технической реализации, но в конце концов не один подход не привел к ясности. То, что сегодня используется для отображения карточки пользователя, завтра может использоваться для карточки автомобиля. Нельзя однозначно сказать, является ли элемент формой. Ячейка таблицы, возможно претерпит изменения и начет использоваться в стеке и так далее. У вас может быть 10 разных элементов состоящих из одного изображения и двух надписей. В итоге, эта папка является свалкой, но изолированной. Если у вас есть решение, пожалуйста поделитесь в комментариях.</p>
+<p>Если элемент <strong>UI</strong> настраивается с помощью модели или имеет свой контроллер (я не имею в виду <strong>UIViewController</strong>), то он размещается рядом с элементом.</p>
+<h2 id="domain">Domain</h2>
+<ul>
+<li><strong>Repository</strong>
+<ul>
+<li><strong>Network</strong></li>
+<li><strong>PersistentStorage</strong></li>
+</ul>
+</li>
+<li><strong>Session</strong></li>
+<li><strong>ActivityManager</strong></li>
+<li><strong>Loger</strong></li>
+<li><strong>ErrorHandler</strong></li>
+<li><strong>Entity</strong></li>
+</ul>
+<p><strong>Domain</strong> это все что не UI. Она очень просто систематизируется. Большинство приложений работают с данными, добавим директорию <strong>Repository</strong>. Есть сетевой слой? Добавим <strong>Network</strong>. Парсеры, обработчики ошибок, валидаторы, пуш уведомления, позиционирование, камера, это все бизнес логика. Можно конечно разделить ее на две — сервисы и кор сервисы. Но мне кажется это не принципиально. Структура этой папки ограничена только тем как вы пишите свой код.</p>
+<p>Так же здесь размещены <strong>Entity</strong>. Они содержат наши собственные типы данных. Название так же зависит от вкусовых предпочтений. Можете назвать их классами/структурами/моделями/dto.</p>
+<p>Напоследок рекомендую воздержаться от создания различного рода <strong>manager</strong> и <strong>helper</strong> в какой-то одной папке. Если немного подумать, то с высокой долей вероятности можно придумать более подходящее имя и директорию для класса.</p>
+    </div>
+</article>
+
+        </main>
+        <footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Евгений Елчев. All rights reserved.</p>
+        <p class="geek-footer">while(alive) { <span class="blink">code();</span> }</p>
+    </div>
+</footer>
+
+    </div>
+    <script src="/js/main.js"></script>
+</body>
+</html>

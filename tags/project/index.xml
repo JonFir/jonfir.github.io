@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Project on JonFir</title>
-    <link>https://jonfir.github.io/tags/project/</link>
-    <description>Recent content in Project on JonFir</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>ru-RU</language>
-    <lastBuildDate>Mon, 28 Oct 2019 12:40:40 +0700</lastBuildDate><atom:link href="https://jonfir.github.io/tags/project/index.xml" rel="self" type="application/rss+xml" />
+    <title>Project on Евгений Елчев</title>
+    <link>https://jonfir.ru/tags/project/</link>
+    <description>Recent content in Project on Евгений Елчев</description>
+    <generator>Hugo</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Mon, 28 Oct 2019 12:40:40 +0700</lastBuildDate>
+    <atom:link href="https://jonfir.ru/tags/project/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Структура iOS проекта</title>
-      <link>https://jonfir.github.io/posts/ios-project-structure/</link>
+      <link>https://jonfir.ru/blogs/it/ios-project-structure.md/</link>
       <pubDate>Mon, 28 Oct 2019 12:40:40 +0700</pubDate>
-      
-      <guid>https://jonfir.github.io/posts/ios-project-structure/</guid>
-      <description>Best practices по структуре папок в проекте</description>
+      <guid>https://jonfir.ru/blogs/it/ios-project-structure.md/</guid>
+      <description>&lt;p&gt;Привет. В этой статье поговорим о структуре папок в проекте. Это не популярная тема для статей, но правильная структура папок влияет на удобство навигации.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>
