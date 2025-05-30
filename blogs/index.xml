@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Блоги on Евгений Елчев</title>
-    <link>https://jonfir.ru/blogs/</link>
+    <link>https://jonfir.github.io/blogs/</link>
     <description>Recent content in Блоги on Евгений Елчев</description>
     <generator>Hugo</generator>
     <language>ru-ru</language>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="https://jonfir.ru/blogs/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://jonfir.github.io/blogs/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

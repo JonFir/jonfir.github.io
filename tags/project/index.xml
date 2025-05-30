@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Project on Евгений Елчев</title>
-    <link>https://jonfir.ru/tags/project/</link>
+    <link>https://jonfir.github.io/tags/project/</link>
     <description>Recent content in Project on Евгений Елчев</description>
     <generator>Hugo</generator>
     <language>ru-ru</language>
     <lastBuildDate>Mon, 28 Oct 2019 12:40:40 +0700</lastBuildDate>
-    <atom:link href="https://jonfir.ru/tags/project/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://jonfir.github.io/tags/project/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Структура iOS проекта</title>
-      <link>https://jonfir.ru/blogs/it/ios-project-structure.md/</link>
+      <link>https://jonfir.github.io/blogs/it/ios-project-structure.md/</link>
       <pubDate>Mon, 28 Oct 2019 12:40:40 +0700</pubDate>
-      <guid>https://jonfir.ru/blogs/it/ios-project-structure.md/</guid>
+      <guid>https://jonfir.github.io/blogs/it/ios-project-structure.md/</guid>
       <description>&lt;p&gt;Привет. В этой статье поговорим о структуре папок в проекте. Это не популярная тема для статей, но правильная структура папок влияет на удобство навигации.&lt;/p&gt;</description>
     </item>
   </channel>

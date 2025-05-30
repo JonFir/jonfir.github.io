@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DI on Евгений Елчев</title>
-    <link>https://jonfir.ru/tags/di/</link>
+    <link>https://jonfir.github.io/tags/di/</link>
     <description>Recent content in DI on Евгений Елчев</description>
     <generator>Hugo</generator>
     <language>ru-ru</language>
     <lastBuildDate>Tue, 24 Jul 2018 15:23:11 +0700</lastBuildDate>
-    <atom:link href="https://jonfir.ru/tags/di/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://jonfir.github.io/tags/di/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Инверсия управления в iOS</title>
-      <link>https://jonfir.ru/blogs/it/ioc-ios/</link>
+      <link>https://jonfir.github.io/blogs/it/ioc-ios/</link>
       <pubDate>Tue, 24 Jul 2018 15:23:11 +0700</pubDate>
-      <guid>https://jonfir.ru/blogs/it/ioc-ios/</guid>
+      <guid>https://jonfir.github.io/blogs/it/ioc-ios/</guid>
       <description>&lt;p&gt;В последнее время я все чаще слышу о DI. Им интересуются мои студенты в Geek University, его упоминают в чатах. Хотя паттерн далеко не молод, многие не совсем верно его понимают.&#xA;Часто под DI подразумевают фреймворк, например, typhoon или swinject. В статье подробно разберем принципы реализации DI, а также принцип IoC.&lt;/p&gt;</description>
     </item>
   </channel>
