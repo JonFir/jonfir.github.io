@@ -736,10 +736,19 @@ blockquote p:not(:last-child) {
 
 .preview-item img {
     width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 6px 6px 0 0;
+    display: block;
+}
+
+.post-card img {
+    width: 100%;
     max-height: 180px;
     height: auto;
     object-fit: cover;
     border-radius: 6px 6px 0 0;
     display: block;
     box-sizing: border-box;
+    margin-bottom: 18px;
 }
