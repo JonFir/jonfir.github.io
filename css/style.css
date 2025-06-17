@@ -314,6 +314,13 @@ header {
     gap: 20px;
 }
 
+.preview-grid-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    min-height: 2lh;
+}
+
 .preview-item {
     background-color: var(--card-color);
     border-radius: 6px;
@@ -335,15 +342,6 @@ header {
     width: 100%;
     height: 100%;
     z-index: 1;
-}
-
-.preview-item h3 {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    color: var(--text-color);
-    position: relative;
-    z-index: 2;
 }
 
 .preview-item .read-more {
